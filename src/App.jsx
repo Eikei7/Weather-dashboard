@@ -1,4 +1,4 @@
-// src/App.jsx - Metric Only
+// src/App.jsx - With Cloud Spinner
 import { useState, useEffect, useRef } from 'react';
 import CurrentWeather from './components/CurrentWeather';
 import Forecast from './components/Forecast';
@@ -184,7 +184,15 @@ function App() {
         <main className="app-content" ref={contentRef}>
           {isLoading && (
             <div className="loading">
-              <div className="loading-spinner"></div>
+              {/* Cloud spinner animation */}
+              <div className="cloud-spinner">
+                <div className="rain">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
               <div className="loading-text fade-in">Loading weather data...</div>
             </div>
           )}

@@ -1,6 +1,5 @@
-// src/components/CurrentWeather.jsx - Metric Only Version
+// src/components/CurrentWeather.jsx - Without Custom Weather Animations
 import { useEffect, useRef } from 'react';
-import WeatherAnimation from './WeatherAnimation';
 import { formatDate } from '../utils/helpers';
 import { animateValue, staggerElements } from '../utils/transitions';
 import '../styles/CurrentWeather.css';
@@ -70,8 +69,6 @@ const CurrentWeather = ({ data, location, onSave }) => {
 
   return (
     <div className="current-weather" ref={containerRef}>
-      <WeatherAnimation weatherCode={icon} />
-      
       <div className="weather-header">
         <div className="location-info">
           <h2 className="fade-in-down">{city || location.name}{country ? `, ${country}` : ''}</h2>

@@ -14,8 +14,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  position: relative;
-  z-index: 2;
 }
 
 .location-info {
@@ -41,16 +39,15 @@
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .save-button:hover {
   background-color: #023e8a;
+  transform: translateY(-2px);
 }
 
 .weather-content {
-  position: relative;
-  z-index: 2;
   margin-bottom: 1.5rem;
 }
 
@@ -69,6 +66,11 @@
 .temp-icon img {
   width: 120px;
   height: 120px;
+  transition: transform 0.3s;
+}
+
+.temp-icon img:hover {
+  transform: scale(1.1);
 }
 
 .temp-info {
@@ -100,8 +102,6 @@
   background-color: #f8f9fa;
   border-radius: 8px;
   padding: 1rem;
-  position: relative;
-  z-index: 2;
 }
 
 .detail-item {
@@ -109,6 +109,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  transition: transform 0.3s;
+}
+
+.detail-item:hover {
+  transform: translateY(-5px);
 }
 
 .detail-label {
@@ -150,17 +155,6 @@
 
 .pulse {
   animation: pulse 2s infinite;
-}
-
-/* Weather animation container */
-.weather-animation {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
 }
 
 /* Responsive adjustments */

@@ -235,3 +235,107 @@
   .stagger-item.show {
     animation: fadeInUp 0.5s ease forwards;
   }
+
+  /* Add this to your existing styles/animations.css file */
+
+.cloud-spinner {
+    position: relative;
+    width: 120px;
+    height: 80px;
+    margin: 20px auto;
+  }
+  
+  /* Main cloud body */
+  .cloud-spinner::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 40px;
+    background-color: #f5f5f5;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    animation: pulse-cloud 2s infinite ease-in-out;
+  }
+  
+  /* Cloud bumps */
+  .cloud-spinner::after {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 25%;
+    width: 25px;
+    height: 25px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    box-shadow: 
+      25px -10px 0 5px #f5f5f5,
+      50px 0 0 8px #f5f5f5,
+      30px 15px 0 -2px #f5f5f5;
+    animation: pulse-cloud 2s infinite ease-in-out;
+  }
+  
+  /* Moving dots animation (rain) */
+  .cloud-spinner .rain {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .cloud-spinner .rain span {
+    width: 5px;
+    height: 5px;
+    background-color: #0077b6;
+    border-radius: 50%;
+    opacity: 0;
+  }
+  
+  .cloud-spinner .rain span:nth-child(1) {
+    animation: rain-drop 2s 0.1s infinite linear;
+  }
+  
+  .cloud-spinner .rain span:nth-child(2) {
+    animation: rain-drop 2s 0.4s infinite linear;
+  }
+  
+  .cloud-spinner .rain span:nth-child(3) {
+    animation: rain-drop 2s 0.7s infinite linear;
+  }
+  
+  .cloud-spinner .rain span:nth-child(4) {
+    animation: rain-drop 2s 1s infinite linear;
+  }
+  
+  @keyframes pulse-cloud {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  @keyframes rain-drop {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+  }
