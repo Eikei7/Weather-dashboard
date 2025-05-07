@@ -287,14 +287,17 @@ body {
   background-color: #0077b6;
   color: white;
   border: none;
-  width: 100px;
+  border-radius: 6px;
   height: 45px;
+  min-width: 45px;
+  padding: 0 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0; /* Prevent button from shrinking */
 }
 
 .my-location-button:hover {
@@ -302,8 +305,38 @@ body {
 }
 
 .my-location-button img {
-  width: 35px;
-  height: 35px;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+  }
+  
+  .my-location-button {
+    width: 45px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  .my-location-button {
+    height: 40px;
+    width: 40px;
+  }
+  
+  .my-location-button img {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 /* Responsive adjustments */
