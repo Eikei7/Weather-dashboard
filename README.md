@@ -13,7 +13,7 @@ A modern, responsive weather dashboard application built with React and Vite. Th
 
 ## Technologies Used
 
-- React 18
+- React 19
 - Vite
 - OpenWeatherMap API
 - CSS3 with responsive design
@@ -29,7 +29,7 @@ A modern, responsive weather dashboard application built with React and Vite. Th
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/weather-dashboard.git
+   git clone https://github.com/Eikei7/weather-dashboard.git
    cd weather-dashboard
    ```
 
@@ -69,22 +69,31 @@ weather-dashboard/
 ├── src/
 │   ├── components/
 │   │   ├── CurrentWeather.jsx
+│   │   ├── DynamicBackground.jsx
 │   │   ├── Forecast.jsx
+│   │   ├── LastUpdated.jsx
 │   │   ├── LocationSearch.jsx
 │   │   ├── SavedLocations.jsx
+│   │   ├── WeatherAnimation.jsx
 │   │   ├── WeatherMap.jsx
 │   │   └── WeatherCard.jsx
 │   ├── services/
 │   │   └── weatherAPI.js
 │   ├── styles/
+│   │   ├── animations.css
 │   │   ├── App.css
 │   │   ├── CurrentWeather.css
+│   │   ├── DynamicBackground.css
 │   │   ├── Forecast.css
+│   │   ├── LastUpdated.css
 │   │   ├── LocationSearch.css
 │   │   ├── SavedLocations.css
+│   │   ├── WeatherAnimation.css
 │   │   ├── WeatherMap.css
+│   │   ├── WeatherCard.css
 │   │   └── index.css
 │   ├── utils/
+│   │   ├── transitions.js
 │   │   └── helpers.js
 │   ├── App.jsx
 │   └── main.jsx
@@ -113,15 +122,6 @@ The build artifacts will be stored in the `dist/` directory.
 ## Deployment
 
 You can deploy this app to any static site hosting service like Netlify, Vercel, GitHub Pages, etc.
-
-## Future Enhancements
-
-- Add unit and integration tests
-- Add dark mode support
-- Implement weather alerts
-- Add hourly forecast
-- Add historical weather data
-- Add more weather maps and visualizations
 
 ## License
 
