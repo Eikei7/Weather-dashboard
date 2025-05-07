@@ -1,44 +1,13 @@
 /**
- * Convert temperature between Celsius and Fahrenheit
+ * Format a temperature value with Celsius
  * @param {number} temp - Temperature value
- * @param {string} toUnit - Target unit ('metric' for Celsius, 'imperial' for Fahrenheit)
- * @param {string} fromUnit - Source unit ('metric' for Celsius, 'imperial' for Fahrenheit)
- * @returns {number} - Converted temperature
- */
-export const convertTemperature = (temp, toUnit, fromUnit = 'metric') => {
-  // If temp is undefined or null, return as is
-  if (temp === undefined || temp === null) return temp;
-  
-  // If units are the same, no conversion needed
-  if (toUnit === fromUnit) return temp;
-  
-  // Convert Celsius to Fahrenheit
-  if (fromUnit === 'metric' && toUnit === 'imperial') {
-    return (temp * 9/5) + 32;
-  }
-  
-  // Convert Fahrenheit to Celsius
-  if (fromUnit === 'imperial' && toUnit === 'metric') {
-    return (temp - 32) * 5/9;
-  }
-  
-  // Default case (should not reach here)
-  return temp;
-};
-
-/**
- * Format a temperature value with the appropriate unit
- * @param {number} temp - Temperature value
- * @param {string} unit - Temperature unit ('metric' or 'imperial')
  * @returns {string} - Formatted temperature string
  */
-export const formatTemperature = (temp, unit = 'metric') => {
+export const formatTemperature = (temp) => {
   if (temp === undefined || temp === null) return 'N/A';
   
   const roundedTemp = Math.round(temp);
-  return unit === 'metric' 
-    ? `${roundedTemp}°C` 
-    : `${roundedTemp}°F`;
+  return `${roundedTemp}°C`;
 };
 
 /**
@@ -99,17 +68,14 @@ export const getWindDirection = (degrees) => {
 };
 
 /**
- * Format wind speed with the appropriate unit
+ * Format wind speed with m/s unit
  * @param {number} speed - Wind speed value
- * @param {string} unit - Speed unit ('metric' or 'imperial')
  * @returns {string} - Formatted wind speed string
  */
-export const formatWindSpeed = (speed, unit = 'metric') => {
+export const formatWindSpeed = (speed) => {
   if (speed === undefined || speed === null) return 'N/A';
   
-  return unit === 'metric' 
-    ? `${speed.toFixed(1)} m/s` 
-    : `${speed.toFixed(1)} mph`;
+  return `${speed.toFixed(1)} m/s`;
 };
 
 /**

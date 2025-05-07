@@ -1,4 +1,4 @@
-// src/App.jsx - With Dynamic Background
+// src/App.jsx - Metric Only
 import { useState, useEffect, useRef } from 'react';
 import CurrentWeather from './components/CurrentWeather';
 import Forecast from './components/Forecast';
@@ -20,7 +20,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isChangingLocation, setIsChangingLocation] = useState(false);
   const [error, setError] = useState(null);
-  const [unit, setUnit] = useState('metric'); // 'metric' for Celsius, 'imperial' for Fahrenheit
   const [lastUpdated, setLastUpdated] = useState(null);
   
   // Refs for animated elements
@@ -48,12 +47,6 @@ function App() {
       setSavedLocations(JSON.parse(saved));
     }
 
-    // Get saved unit preference
-    const savedUnit = localStorage.getItem('unit');
-    if (savedUnit) {
-      setUnit(savedUnit);
-    }
-
     // Try to get user's current location
     const loadInitialLocation = async () => {
       try {
@@ -79,11 +72,6 @@ function App() {
       localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
     }
   }, [savedLocations]);
-
-  useEffect(() => {
-    // Save unit preference to localStorage
-    localStorage.setItem('unit', unit);
-  }, [unit]);
 
   const handleLocationSelect = async (locationData) => {
     // If there was already a location, animate the transition
@@ -119,19 +107,14 @@ function App() {
     setIsLoading(true);
     setError(null);
     setLocation(locationData);
-  
+
     try {
-      // Add debugging log here
-      const weatherData = await fetchWeatherData(locationData, unit);
-      console.log('Weather data with unit:', unit, weatherData);
-      
+      const weatherData = await fetchWeatherData(locationData);
       setCurrentWeather(weatherData);
       // Set last updated time from the weather data
       setLastUpdated(weatherData.lastUpdated);
-  
-      const forecastData = await fetchForecastData(locationData, unit);
-      console.log('Forecast data with unit:', unit, forecastData); // Add this line too
-      
+
+      const forecastData = await fetchForecastData(locationData);
       setForecast(forecastData.forecast);
     } catch (err) {
       setError('Failed to fetch weather data. Please try again.');
@@ -152,25 +135,6 @@ function App() {
         }, 1500);
       }
       
-      handleLocationSelect(location);
-    }
-  };
-
-  const handleUnitChange = (newUnit) => {
-    if (unit === newUnit) return;
-    
-    // Add transition effect when changing units
-    if (contentRef.current) {
-      contentRef.current.classList.add('fade-in');
-      
-      setTimeout(() => {
-        contentRef.current.classList.remove('fade-in');
-      }, 500);
-    }
-    
-    setUnit(newUnit);
-    
-    if (location) {
       handleLocationSelect(location);
     }
   };
@@ -211,23 +175,9 @@ function App() {
           <h1>Weather Dashboard</h1>
           <LocationSearch onLocationSelect={handleLocationSelect} />
           <div className="header-controls">
-            <div className="unit-toggle">
-              <button 
-                className={unit === 'metric' ? 'active' : ''} 
-                onClick={() => handleUnitChange('metric')}
-              >
-                °C
-              </button>
-              <button 
-                className={unit === 'imperial' ? 'active' : ''} 
-                onClick={() => handleUnitChange('imperial')}
-              >
-                °F
-              </button>
-            </div>
-            {/* <button className="refresh-button" onClick={handleRefresh}>
+            <button className="refresh-button" onClick={handleRefresh}>
               Refresh Data
-            </button> */}
+            </button>
           </div>
         </header>
         
@@ -246,13 +196,12 @@ function App() {
               <CurrentWeather 
                 data={currentWeather} 
                 location={location}
-                unit={unit}
                 onSave={() => addSavedLocation(location)}
               />
               
               {lastUpdated && <LastUpdated timestamp={lastUpdated} onRefresh={handleRefresh} />}
               
-              {forecast && <Forecast data={forecast} unit={unit} />}
+              {forecast && <Forecast data={forecast} />}
               
               {location && <WeatherMap location={location} />}
             </>

@@ -1,3 +1,4 @@
+// src/components/CurrentWeather.jsx - Metric Only Version
 import { useEffect, useRef } from 'react';
 import WeatherAnimation from './WeatherAnimation';
 import { formatDate } from '../utils/helpers';
@@ -5,7 +6,7 @@ import { animateValue, staggerElements } from '../utils/transitions';
 import '../styles/CurrentWeather.css';
 import '../styles/animations.css';
 
-const CurrentWeather = ({ data, location, unit, onSave }) => {
+const CurrentWeather = ({ data, location, onSave }) => {
   const containerRef = useRef(null);
   const detailsRef = useRef(null);
   const tempValueRef = useRef(null);
@@ -28,12 +29,12 @@ const CurrentWeather = ({ data, location, unit, onSave }) => {
       const prevTemp = prevTempRef.current || data.temperature;
       animateValue(prevTemp, data.temperature, (value) => {
         if (tempValueRef.current) {
-          tempValueRef.current.textContent = `${Math.round(value)}°${unit === 'metric' ? 'C' : 'F'}`;
+          tempValueRef.current.textContent = `${Math.round(value)}°C`;
         }
       }, 1000);
       prevTempRef.current = data.temperature;
     }
-  }, [data, unit]);
+  }, [data]);
   
   if (!data) return null;
 
@@ -53,9 +54,10 @@ const CurrentWeather = ({ data, location, unit, onSave }) => {
 
   const formatTime = (timestamp) => {
     if (!timestamp) return 'N/A';
-    return new Date(timestamp).toLocaleTimeString([], { 
+    return new Date(timestamp).toLocaleTimeString('sv', { 
       hour: '2-digit', 
-      minute: '2-digit' 
+      minute: '2-digit',
+      hour12: false
     });
   };
 
@@ -90,13 +92,13 @@ const CurrentWeather = ({ data, location, unit, onSave }) => {
           </div>
           <div className="temp-info">
             <h3 className="temp-value" ref={tempValueRef}>
-              {temperature}°{unit === 'metric' ? 'C' : 'F'}
+              {temperature}°C
             </h3>
             <p className="temp-description fade-in">
               {description}
             </p>
             <p className="feels-like fade-in">
-              Feels like: {feelsLike}°{unit === 'metric' ? 'C' : 'F'}
+              Feels like: {feelsLike}°C
             </p>
           </div>
         </div>
@@ -110,7 +112,7 @@ const CurrentWeather = ({ data, location, unit, onSave }) => {
         <div className="detail-item">
           <span className="detail-label">Wind</span>
           <span className="detail-value">
-            {unit === 'metric' ? `${windSpeed} m/s` : `${windSpeed} mph`}
+            {windSpeed} m/s
           </span>
         </div>
         <div className="detail-item">

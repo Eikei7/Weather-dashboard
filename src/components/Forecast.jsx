@@ -1,4 +1,3 @@
-// src/components/Forecast.jsx - Animated Version
 import { useEffect, useRef } from 'react';
 import WeatherCard from './WeatherCard';
 import { staggerElements } from '../utils/transitions';

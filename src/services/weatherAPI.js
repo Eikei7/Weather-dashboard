@@ -1,5 +1,7 @@
+// src/services/weatherAPI.js
+
 // Replace with your actual API key from OpenWeatherMap
-const API_KEY = import.meta.env.VITE_WEATHER_API_KEY || 'xxxxxxxxxxxxxxxxxxxxx';
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY || 'your_api_key_here';
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 /**
@@ -7,10 +9,10 @@ const BASE_URL = 'https://api.openweathermap.org/data/2.5';
  * @param {Object} location - Location object with lat and lon properties
  * @returns {Promise} - Promise that resolves to weather data
  */
-export const fetchWeatherData = async (locationData, unit = 'metric') => {
+export const fetchWeatherData = async (location) => {
   try {
     const response = await fetch(
-      `${BASE_URL}/weather?lat=${locationData.lat}&lon=${locationData.lon}&units=${unit}&appid=${API_KEY}`
+      `${BASE_URL}/weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`
     );
     
     if (!response.ok) {
@@ -29,9 +31,9 @@ export const fetchWeatherData = async (locationData, unit = 'metric') => {
       icon: data.weather[0].icon,
       country: data.sys.country,
       city: data.name,
-      sunrise: data.sys.sunrise * 1000,
-      sunset: data.sys.sunset * 1000,
-      lastUpdated: new Date().toISOString(),
+      sunrise: data.sys.sunrise * 1000, // Convert to milliseconds
+      sunset: data.sys.sunset * 1000,   // Convert to milliseconds
+      lastUpdated: new Date().toISOString(), // Add timestamp for when data was fetched
     };
   } catch (error) {
     console.error('Error fetching weather data:', error);
@@ -44,10 +46,10 @@ export const fetchWeatherData = async (locationData, unit = 'metric') => {
  * @param {Object} location - Location object with lat and lon properties
  * @returns {Promise} - Promise that resolves to forecast data
  */
-export const fetchForecastData = async (locationData, unit = 'metric') => {
+export const fetchForecastData = async (location) => {
   try {
     const response = await fetch(
-      `${BASE_URL}/forecast?lat=${locationData.lat}&lon=${locationData.lon}&units=${unit}&appid=${API_KEY}`
+      `${BASE_URL}/forecast?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`
     );
     
     if (!response.ok) {
@@ -128,6 +130,7 @@ export const searchLocations = async (query) => {
     throw error;
   }
 };
+
 /**
  * Format a timestamp into a readable date and time string
  * @param {string} timestamp - ISO timestamp string

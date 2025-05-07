@@ -166,30 +166,85 @@ const WeatherAnimation = ({ weatherCode }) => {
     drawSnow();
   };
   
-  // Cloud animation setup
+  // Cloud animation setup - Improved version
   const setupCloudAnimation = (canvas, ctx, particles, animationFrameIdRef) => {
-    for (let i = 0; i < 5; i++) {
+    // Clear existing particles
+    particles.length = 0;
+    
+    // Add fewer, larger clouds
+    for (let i = 0; i < 3; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * (canvas.height / 3) + 20,
-        width: Math.random() * 100 + 60,
-        height: Math.random() * 40 + 20,
-        speed: Math.random() * 0.5 + 0.1
+        width: Math.random() * 120 + 80, // Larger width
+        height: Math.random() * 50 + 30,  // Larger height
+        speed: Math.random() * 0.3 + 0.1  // Slightly slower movement
       });
     }
     
     const drawClouds = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
       
       particles.forEach(cloud => {
-        // Draw cloud
+        // Save the current context state
+        ctx.save();
+        
+        // Use a better cloud drawing technique
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        
+        // Create a cloud shape using bezier curves
         ctx.beginPath();
-        ctx.arc(cloud.x, cloud.y, cloud.height/2, 0, Math.PI * 2);
-        ctx.arc(cloud.x + cloud.width/4, cloud.y - cloud.height/4, cloud.height/2.5, 0, Math.PI * 2);
-        ctx.arc(cloud.x + cloud.width/2, cloud.y, cloud.height/2, 0, Math.PI * 2);
-        ctx.arc(cloud.x + cloud.width/3, cloud.y + cloud.height/4, cloud.height/2.5, 0, Math.PI * 2);
+        
+        // Start point at the bottom-left of the cloud
+        const startX = cloud.x;
+        const startY = cloud.y + cloud.height / 2;
+        
+        ctx.moveTo(startX, startY);
+        
+        // Bottom curve
+        ctx.bezierCurveTo(
+          startX - cloud.width * 0.1, startY + cloud.height * 0.1, 
+          startX + cloud.width * 1.1, startY + cloud.height * 0.1,
+          startX + cloud.width, startY
+        );
+        
+        // Right side curve
+        ctx.bezierCurveTo(
+          startX + cloud.width * 1.1, startY - cloud.height * 0.5,
+          startX + cloud.width * 0.7, startY - cloud.height * 1.2,
+          startX + cloud.width * 0.6, startY - cloud.height * 0.6
+        );
+        
+        // Top curve
+        ctx.bezierCurveTo(
+          startX + cloud.width * 0.5, startY - cloud.height * 1.0,
+          startX + cloud.width * 0.3, startY - cloud.height * 1.0,
+          startX + cloud.width * 0.2, startY - cloud.height * 0.6
+        );
+        
+        // Left side curve
+        ctx.bezierCurveTo(
+          startX, startY - cloud.height * 0.8,
+          startX - cloud.width * 0.1, startY - cloud.height * 0.2,
+          startX, startY
+        );
+        
+        // Fill the cloud
         ctx.fill();
+        
+        // Add some subtle shading
+        const gradient = ctx.createLinearGradient(
+          startX, startY - cloud.height, 
+          startX, startY + cloud.height / 2
+        );
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+        gradient.addColorStop(1, 'rgba(230, 230, 230, 0.7)');
+        
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // Restore the context
+        ctx.restore();
         
         // Move clouds
         cloud.x += cloud.speed;
@@ -198,6 +253,8 @@ const WeatherAnimation = ({ weatherCode }) => {
         if (cloud.x > canvas.width + cloud.width) {
           cloud.x = -cloud.width;
           cloud.y = Math.random() * (canvas.height / 3) + 20;
+          cloud.width = Math.random() * 120 + 80;
+          cloud.height = Math.random() * 50 + 30;
         }
       });
       
