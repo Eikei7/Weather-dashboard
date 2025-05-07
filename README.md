@@ -44,7 +44,7 @@ A modern, responsive weather dashboard application built with React and Vite. Th
 
 3. Create a `.env` file in the root directory and add your OpenWeatherMap API key:
    ```
-   VITE_WEATHER_API_KEY=your_api_key_here
+   WEATHER_API_KEY=your_api_key_here
    ```
    
    You can get a free API key by signing up at [OpenWeatherMap](https://openweathermap.org/api).
@@ -58,12 +58,17 @@ A modern, responsive weather dashboard application built with React and Vite. Th
    yarn dev
    ```
 
-5. Open your browser and navigate to `http://localhost:3000`
+5. Open your browser and navigate to `http://localhost:8888`
 
 ## Project Structure
 
 ```
 weather-dashboard/
+├── netlify/
+│   └── functions/
+│       ├── getData.js
+│       ├── getForecast.js
+│       └── searchLocation.js
 ├── public/
 │   └── favicon.ico
 ├── src/
