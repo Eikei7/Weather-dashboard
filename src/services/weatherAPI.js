@@ -1,8 +1,10 @@
-// src/services/weatherAPI.js
-
 // Replace with your actual API key from OpenWeatherMap
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY || 'your_api_key_here';
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+
+if (!API_KEY || API_KEY === 'your_api_key_here') {
+  throw new Error('Missing OpenWeatherMap API key');
+}
 
 /**
  * Fetch current weather data for a location
@@ -12,7 +14,7 @@ const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 export const fetchWeatherData = async (location) => {
   try {
     const response = await fetch(
-      `${BASE_URL}/weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`
+      `../.netlify/functions/getWeather?lat=${location.lat}&lon=${location.lon}`
     );
     
     if (!response.ok) {
@@ -49,7 +51,7 @@ export const fetchWeatherData = async (location) => {
 export const fetchForecastData = async (location) => {
   try {
     const response = await fetch(
-      `${BASE_URL}/forecast?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`
+      `../.netlify/functions/getForecast?lat=${location.lat}&lon=${location.lon}`
     );
     
     if (!response.ok) {
