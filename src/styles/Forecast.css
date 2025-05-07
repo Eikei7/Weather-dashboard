@@ -1,0 +1,90 @@
+.forecast {
+    padding: 1.5rem;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  }
+  
+  .forecast h3 {
+    font-size: 1.4rem;
+    color: #0077b6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .forecast-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+  }
+  
+  .forecast-day {
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  /* .forecast-day:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  } */
+  
+  .forecast-date {
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .day {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0077b6;
+  }
+  
+  .date {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+  
+  .forecast-icon {
+    margin: 0.5rem 0;
+  }
+  
+  .forecast-icon img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .forecast-temp {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .forecast-description {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-transform: capitalize;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .forecast-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .forecast-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .forecast-container {
+      grid-template-columns: 1fr;
+    }
+  }

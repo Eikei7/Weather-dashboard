@@ -1,0 +1,78 @@
+/* src/styles/LastUpdated.css */
+.last-updated {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #0077b6;
+    font-size: 0.9rem;
+  }
+  
+  .last-updated-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .last-updated-label {
+    color: #6c757d;
+    font-weight: 500;
+  }
+  
+  .last-updated-time {
+    color: #343a40;
+  }
+  
+  .refresh-button {
+    background-color: transparent;
+    color: #0077b6;
+    border: 1px solid #0077b6;
+    border-radius: 4px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .refresh-button:hover {
+    background-color: #0077b6;
+    color: white;
+  }
+  
+  /* Animation for refreshing */
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .refreshing .refresh-button {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  
+  .refreshing .refresh-button::before {
+    content: "↻";
+    display: inline-block;
+    margin-right: 0.25rem;
+    animation: rotate 1s linear infinite;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .last-updated {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    .refresh-button {
+      align-self: flex-end;
+    }
+  }

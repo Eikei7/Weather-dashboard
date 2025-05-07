@@ -1,0 +1,237 @@
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  /* Fade in up animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .fade-in-up {
+    animation: fadeInUp 0.5s ease forwards;
+  }
+  
+  /* Fade in down animation */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .fade-in-down {
+    animation: fadeInDown 0.5s ease forwards;
+  }
+  
+  /* Slide in from left animation */
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .slide-in-left {
+    animation: slideInLeft 0.5s ease forwards;
+  }
+  
+  /* Slide in from right animation */
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .slide-in-right {
+    animation: slideInRight 0.5s ease forwards;
+  }
+  
+  /* Zoom in animation */
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .zoom-in {
+    animation: zoomIn 0.5s ease forwards;
+  }
+  
+  /* Bounce animation */
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-15px);
+    }
+    60% {
+      transform: translateY(-7px);
+    }
+  }
+  
+  .bounce {
+    animation: bounce 1s ease;
+  }
+  
+  /* Pulse animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .pulse {
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  /* Rotate animation */
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .rotate {
+    animation: rotate 2s linear infinite;
+  }
+  
+  /* Shake animation (for errors) */
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(5px);
+    }
+  }
+  
+  .shake {
+    animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  
+  /* Flip animation */
+  @keyframes flip {
+    0% {
+      transform: perspective(400px) rotateY(0);
+      animation-timing-function: ease-out;
+    }
+    40% {
+      transform: perspective(400px) translateZ(150px) rotateY(170deg);
+      animation-timing-function: ease-out;
+    }
+    50% {
+      transform: perspective(400px) translateZ(150px) rotateY(190deg) scale(1);
+      animation-timing-function: ease-in;
+    }
+    80% {
+      transform: perspective(400px) rotateY(360deg) scale(.95);
+      animation-timing-function: ease-in;
+    }
+    100% {
+      transform: perspective(400px) scale(1);
+      animation-timing-function: ease-in;
+    }
+  }
+  
+  .flip {
+    animation: flip 1s;
+    backface-visibility: visible;
+  }
+  
+  /* Weather change transition */
+  @keyframes weatherChange {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    20% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    80% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .weather-change {
+    animation: weatherChange 1s ease;
+  }
+  
+  /* Loading spinner animation */
+  @keyframes loadingSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .loading-spinner {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0, 119, 182, 0.2);
+    border-top-color: #0077b6;
+    border-radius: 50%;
+    animation: loadingSpin 1s linear infinite;
+  }
+  
+  /* Staggered animation (for lists) */
+  .stagger-item {
+    opacity: 0;
+  }
+  
+  .stagger-item.show {
+    animation: fadeInUp 0.5s ease forwards;
+  }

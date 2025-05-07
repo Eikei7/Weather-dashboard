@@ -1,0 +1,141 @@
+/* src/styles/DynamicBackground.css */
+.dynamic-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    transition: background-color 2s ease, background-image 2s ease;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 1;
+  }
+  
+  /* Default backgrounds */
+  .background-default-day {
+    background: linear-gradient(to bottom, #87ceeb, #e0f7fa);
+  }
+  
+  .background-default-night {
+    background: linear-gradient(to bottom, #1a237e, #303f9f);
+  }
+  
+  /* Clear sky */
+  .background-clear-day {
+    background: linear-gradient(to bottom, #1e88e5, #64b5f6);
+  }
+  
+  .background-clear-night {
+    background: linear-gradient(to bottom, #0d1b41, #13294b);
+  }
+  
+  /* Few clouds */
+  .background-few-clouds-day {
+    background: linear-gradient(to bottom, #42a5f5, #90caf9);
+  }
+  
+  .background-few-clouds-night {
+    background: linear-gradient(to bottom, #1a237e, #3949ab);
+  }
+  
+  /* Cloudy */
+  .background-clouds-day {
+    background: linear-gradient(to bottom, #78909c, #b0bec5);
+  }
+  
+  .background-clouds-night {
+    background: linear-gradient(to bottom, #263238, #455a64);
+  }
+  
+  /* Shower rain */
+  .background-shower-rain-day {
+    background: linear-gradient(to bottom, #546e7a, #78909c);
+  }
+  
+  .background-shower-rain-night {
+    background: linear-gradient(to bottom, #263238, #37474f);
+  }
+  
+  /* Rain */
+  .background-rain-day {
+    background: linear-gradient(to bottom, #455a64, #607d8b);
+  }
+  
+  .background-rain-night {
+    background: linear-gradient(to bottom, #1a2327, #243137);
+  }
+  
+  /* Thunderstorm */
+  .background-thunderstorm-day {
+    background: linear-gradient(to bottom, #37474f, #455a64);
+  }
+  
+  .background-thunderstorm-night {
+    background: linear-gradient(to bottom, #0a0e11, #19222b);
+  }
+  
+  /* Snow */
+  .background-snow-day {
+    background: linear-gradient(to bottom, #cfd8dc, #eceff1);
+  }
+  
+  .background-snow-night {
+    background: linear-gradient(to bottom, #37474f, #546e7a);
+  }
+  
+  /* Mist */
+  .background-mist-day {
+    background: linear-gradient(to bottom, #b0bec5, #cfd8dc);
+  }
+  
+  .background-mist-night {
+    background: linear-gradient(to bottom, #455a64, #607d8b);
+  }
+  
+  /* Add some texture to backgrounds */
+  .background-clear-day::before,
+  .background-few-clouds-day::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 80%);
+    background-size: 120% 120%;
+    background-position: center;
+    z-index: 0;
+  }
+  
+  .background-clear-night::before,
+  .background-few-clouds-night::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(white, rgba(255, 255, 255, 0) 2px), 
+      radial-gradient(white, rgba(255, 255, 255, 0) 1px),
+      radial-gradient(white, rgba(255, 255, 255, 0) 1px);
+    background-size: 100px 100px, 50px 50px, 80px 80px;
+    background-position: 0 0, 25px 25px, 40px 60px;
+    z-index: 0;
+    opacity: 0.15;
+  }
+  
+  /* Media query for reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .dynamic-background {
+      transition: none;
+    }
+  }

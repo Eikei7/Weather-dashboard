@@ -1,0 +1,131 @@
+.current-weather {
+    padding: 1.5rem;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    margin-bottom: 2rem;
+  }
+  
+  .weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .weather-header h2 {
+    font-size: 1.8rem;
+    color: #0077b6;
+    margin: 0;
+  }
+  
+  .save-button {
+    background-color: #0077b6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+  }
+  
+  .save-button:hover {
+    background-color: #023e8a;
+  }
+  
+  .weather-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .weather-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .weather-icon img {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .weather-description {
+    text-transform: capitalize;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .weather-temp {
+    text-align: right;
+  }
+  
+  .weather-temp h3 {
+    font-size: 3.5rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1;
+  }
+  
+  .weather-temp p {
+    color: #6c757d;
+    margin-top: 0.5rem;
+  }
+  
+  .weather-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .detail-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+  }
+  
+  .detail-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .weather-main {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .weather-temp {
+      text-align: center;
+      margin-top: 1rem;
+    }
+  
+    .weather-details {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .weather-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .save-button {
+      margin-top: 1rem;
+    }
+  }
