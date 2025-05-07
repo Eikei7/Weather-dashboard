@@ -21,7 +21,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   color: var(--text-color);
   background-color: var(--background-color);
   line-height: 1.6;
@@ -267,5 +267,48 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+/* Add these styles to your App.css file */
+
+.search-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.search-container > div {
+  flex: 1;
+}
+
+.my-location-button {
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  width: 100px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+.my-location-button:hover {
+  background-color: #023e8a;
+}
+
+.my-location-button img {
+  width: 35px;
+  height: 35px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .search-container {
+    flex-direction: row;
   }
 }

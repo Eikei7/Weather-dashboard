@@ -1,4 +1,4 @@
-// src/App.jsx - With Cloud Spinner
+// src/App.jsx - With Location Button
 import { useState, useEffect, useRef } from 'react';
 import CurrentWeather from './components/CurrentWeather';
 import Forecast from './components/Forecast';
@@ -21,6 +21,7 @@ function App() {
   const [isChangingLocation, setIsChangingLocation] = useState(false);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [defaultLocationLoaded, setDefaultLocationLoaded] = useState(false);
   
   // Refs for animated elements
   const headerRef = useRef(null);
@@ -47,24 +48,16 @@ function App() {
       setSavedLocations(JSON.parse(saved));
     }
 
-    // Try to get user's current location
-    const loadInitialLocation = async () => {
-      try {
-        const userLocation = await getUserLocation();
-        handleLocationSelect(userLocation);
-      } catch (err) {
-        console.error("Couldn't get current location:", err);
-        // Default to a location if geolocation is denied
-        handleLocationSelect({
-          lat: 40.7128,
-          lon: -74.0060,
-          name: 'New York'
-        });
-      }
-    };
-
-    loadInitialLocation();
-  }, []);
+    // Instead of requesting location automatically, load a default city
+    if (!defaultLocationLoaded) {
+      handleLocationSelect({
+        lat: 40.7128,
+        lon: -74.0060,
+        name: 'New York'
+      });
+      setDefaultLocationLoaded(true);
+    }
+  }, [defaultLocationLoaded]);
 
   useEffect(() => {
     // Save locations to localStorage whenever they change
@@ -72,6 +65,18 @@ function App() {
       localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
     }
   }, [savedLocations]);
+
+  const handleGetCurrentLocation = async () => {
+    try {
+      setIsLoading(true);
+      const userLocation = await getUserLocation();
+      handleLocationSelect(userLocation);
+    } catch (err) {
+      console.error("Couldn't get current location:", err);
+      setError('Failed to get your location. Please check your browser permissions.');
+      setIsLoading(false);
+    }
+  };
 
   const handleLocationSelect = async (locationData) => {
     // If there was already a location, animate the transition
@@ -173,7 +178,16 @@ function App() {
       <div className="app">
         <header className="app-header" ref={headerRef}>
           <h1>Weather Dashboard</h1>
-          <LocationSearch onLocationSelect={handleLocationSelect} />
+          <div className="search-container">
+            <LocationSearch onLocationSelect={handleLocationSelect} />
+            <button 
+              className="my-location-button"
+              onClick={handleGetCurrentLocation}
+              aria-label="Get my location"
+            >
+              <img src="/location.png" alt="Location Icon" />
+            </button>
+          </div>
           <div className="header-controls">
             <button className="refresh-button" onClick={handleRefresh}>
               Refresh Data
