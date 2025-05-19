@@ -10,7 +10,7 @@ export async function handler(event, context) {
       };
     }
   
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=se&appid=${API_KEY}`;
   
     try {
       const response = await fetch(url);
