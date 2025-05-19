@@ -1,66 +1,122 @@
-    .saved-locations h3 {
-    font-size: 1.2rem;
-    color: #0077b6;
-    margin-bottom: 1rem;
+.saved-locations h3 {
+  font-size: 1.2rem;
+  color: #0077b6;
+  margin-bottom: 1rem;
+}
+
+.no-locations {
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.location-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.location-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.location-item:hover {
+  transform: translateY(-2px);
+}
+
+.location-button {
+  flex: 1;
+  padding: 0.75rem;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+  color:#0077b6;
+}
+
+
+.location-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.location-weather {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.location-weather-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: -5px;
+}
+
+.location-temp {
+  font-weight: 500;
+  color: #0077b6;
+}
+
+.location-weather.loading {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ccc;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
   }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
   
-  .no-locations {
-    color: #6c757d;
-    font-size: 0.9rem;
-    text-align: center;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-radius: 4px;
-  }
-  
-  .location-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .location-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    background-color: #f8f9fa;
-    border-radius: 4px;
-    overflow: hidden;
-    transition: transform 0.2s;
-  }
-  
-  .location-item:hover {
-    transform: translateY(-2px);
-  }
-  
-  .location-button {
-    flex: 1;
-    padding: 0.75rem;
-    text-align: left;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
-    color:#0077b6;
-  }
-  
-  .location-button:hover {
-    background-color: #e9ecef;
-  }
-  
-  .remove-button {
-    background-color: #f8f9fa;
-    border: none;
-    color: #dc3545;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 0.5rem 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-  }
-  
-  .remove-button:hover {
-    background-color: #dc3545;
-    color: white;
-  }
+.location-button:hover {
+  background-color: #e9ecef;
+}
+
+.remove-button {
+  background-color: #f8f9fa;
+  border: none;
+  color: #dc3545;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.remove-button:hover {
+  background-color: #dc3545;
+  color: white;
+}

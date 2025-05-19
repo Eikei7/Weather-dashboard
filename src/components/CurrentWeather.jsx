@@ -74,7 +74,7 @@ const CurrentWeather = ({ data, location, onSave }) => {
           <h2 className="fade-in-down">{city || location.name}{country ? `, ${country}` : ''}</h2>
           <p className="date fade-in">{currentDate}</p>
         </div>
-        <button onClick={onSave} className="save-button pulse">
+        <button onClick={onSave} className="save-button">
           Spara plats
         </button>
       </div>

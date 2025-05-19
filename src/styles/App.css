@@ -101,13 +101,13 @@ body {
   box-shadow: var(--card-hover-shadow);
 }
 
-.header-controls {
+/* .header-controls {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
   width: 100%;
-}
+} */
 
 .refresh-button {
   background-color: var(--primary-color);

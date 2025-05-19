@@ -22,6 +22,7 @@ function App() {
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [defaultLocationLoaded, setDefaultLocationLoaded] = useState(false);
+  const apiKey = import.meta.env.WEATHER_API_KEY;
   
   // Refs for animated elements
   const headerRef = useRef(null);
@@ -148,13 +149,13 @@ function App() {
     // Check if already saved
     if (!savedLocations.some(loc => loc.name === location.name)) {
       // Apply animation to sidebar when adding a location
-      if (sidebarRef.current) {
-        sidebarRef.current.classList.add('pulse');
+      // if (sidebarRef.current) {
+      //   sidebarRef.current.classList.add('pulse');
         
-        setTimeout(() => {
-          sidebarRef.current.classList.remove('pulse');
-        }, 1000);
-      }
+      //   setTimeout(() => {
+      //     sidebarRef.current.classList.remove('pulse');
+      //   }, 1000);
+      // }
       
       setSavedLocations([...savedLocations, location]);
     }
@@ -235,6 +236,7 @@ function App() {
             locations={savedLocations} 
             onLocationSelect={handleLocationSelect}
             onLocationRemove={removeSavedLocation}
+            apiKey={apiKey}
           />
         </aside>
       </div>
