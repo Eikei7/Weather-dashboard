@@ -75,7 +75,7 @@ const CurrentWeather = ({ data, location, onSave }) => {
           <p className="date fade-in">{currentDate}</p>
         </div>
         <button onClick={onSave} className="save-button pulse">
-          Save Location
+          Spara plats
         </button>
       </div>
 
@@ -95,7 +95,7 @@ const CurrentWeather = ({ data, location, onSave }) => {
               {description}
             </p>
             <p className="feels-like fade-in">
-              Feels like: {feelsLike}°C
+              Känns som: {feelsLike}°C
             </p>
           </div>
         </div>
@@ -103,25 +103,25 @@ const CurrentWeather = ({ data, location, onSave }) => {
 
       <div className="weather-details" ref={detailsRef}>
         <div className="detail-item">
-          <span className="detail-label">Humidity</span>
+          <span className="detail-label">Luftfuktighet</span>
           <span className="detail-value">{humidity}%</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Wind</span>
+          <span className="detail-label">Vind</span>
           <span className="detail-value">
             {windSpeed} m/s
           </span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Pressure</span>
+          <span className="detail-label">Lufttryck</span>
           <span className="detail-value">{pressure} hPa</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Sunrise</span>
+          <span className="detail-label">Soluppgång</span>
           <span className="detail-value">{formatTime(sunrise)}</span>
         </div>
         <div className="detail-item">
-          <span className="detail-label">Sunset</span>
+          <span className="detail-label">Solnedgång</span>
           <span className="detail-value">{formatTime(sunset)}</span>
         </div>
       </div>

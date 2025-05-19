@@ -40,13 +40,13 @@ const WeatherMap = ({ location }) => {
   
   return (
     <div className="weather-map">
-      <h3>Weather Map</h3>
+      <h3>Karta</h3>
       <div className="map-container" ref={mapContainerRef}>
-        <div className="map-loading">Loading map...</div>
+        <div className="map-loading">Laddar karta...</div>
       </div>
       <div className="map-footer">
-        <p>Location: {location.name}</p>
-        <p>Coordinates: {location.lat.toFixed(4)}, {location.lon.toFixed(4)}</p>
+        <p>Plats: {location.name}</p>
+        <p>Koordinater: {location.lat.toFixed(4)}, {location.lon.toFixed(4)}</p>
       </div>
     </div>
   )

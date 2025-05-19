@@ -188,11 +188,11 @@ function App() {
               <img src="/location.png" alt="Location Icon" />
             </button>
           </div>
-          <div className="header-controls">
+          {/* <div className="header-controls">
             <button className="refresh-button" onClick={handleRefresh}>
               Refresh Data
             </button>
-          </div>
+          </div> */}
         </header>
         
         <main className="app-content" ref={contentRef}>

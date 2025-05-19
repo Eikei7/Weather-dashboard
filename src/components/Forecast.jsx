@@ -25,7 +25,7 @@ const Forecast = ({ data, unit }) => {
 
   return (
     <div className="forecast" ref={containerRef}>
-      <h3 className="forecast-title slide-in-left">5-Day Forecast</h3>
+      <h3 className="forecast-title slide-in-left">5-dagarsprognos</h3>
       
       <div className="forecast-container" ref={forecastItemsRef}>
         {data.map((day, index) => (

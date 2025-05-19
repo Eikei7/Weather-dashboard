@@ -1,4 +1,3 @@
-// src/components/DynamicBackground.jsx
 import { useEffect, useState } from 'react';
 import '../styles/DynamicBackground.css';
 

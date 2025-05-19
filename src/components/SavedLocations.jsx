@@ -4,15 +4,15 @@ const SavedLocations = ({ locations, onLocationSelect, onLocationRemove }) => {
   if (!locations || locations.length === 0) {
     return (
       <div className="saved-locations">
-        <h3>Saved Locations</h3>
-        <p className="no-locations">No saved locations yet. Search for a location and save it to see it here.</p>
+        <h3>Sparade platser</h3>
+        <p className="no-locations">Inga sparade platser ännu.</p>
       </div>
     )
   }
 
   return (
     <div className="saved-locations">
-      <h3>Saved Locations</h3>
+      <h3>Sparade platser</h3>
       <ul className="location-list">
         {locations.map((location, index) => (
           <li key={`${location.name}-${index}`} className="location-item">

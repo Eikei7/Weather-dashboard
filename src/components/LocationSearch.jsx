@@ -44,8 +44,8 @@ const LocationSearch = ({ onLocationSelect }) => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for a city..."
-          aria-label="Search for a city"
+          placeholder="Sök på en ort..."
+          aria-label="Sök på en ort"
         />
         <button type="submit" disabled={isSearching}>
           {isSearching ? 'Searching...' : 'Search'}

@@ -6,7 +6,7 @@ const LastUpdated = ({ timestamp, onRefresh }) => {
   return (
     <div className="last-updated">
       <div className="last-updated-info">
-        <span className="last-updated-label">Weather Data last fetched:</span>
+        <span className="last-updated-label">Väderdata senast hämtat:</span>
         <span className="last-updated-time">{formatLastUpdated(timestamp)}</span>
       </div>
       
@@ -16,7 +16,7 @@ const LastUpdated = ({ timestamp, onRefresh }) => {
           onClick={onRefresh}
           aria-label="Refresh weather data"
         >
-          Refresh
+          Ladda om
         </button>
       )}
     </div>

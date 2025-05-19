@@ -110,14 +110,14 @@ const WeatherCard = ({
         <div className="card-details">
           {humidity && (
             <div className="detail-item">
-              <span className="detail-label">Humidity</span>
+              <span className="detail-label">Luftfuktighet</span>
               <span className="detail-value">{humidity}%</span>
             </div>
           )}
           
           {windSpeed && (
             <div className="detail-item">
-              <span className="detail-label">Wind</span>
+              <span className="detail-label">Vind</span>
               <span className="detail-value">
                 {unit === 'metric' ? `${windSpeed} m/s` : `${windSpeed} mph`}
               </span>
