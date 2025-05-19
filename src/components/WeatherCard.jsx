@@ -94,7 +94,7 @@ const WeatherCard = ({
           </div>
           {feelsLike && (
             <div className="feels-like">
-              Feels like: {formatTemperature(feelsLike, unit)}
+              Känns som: {formatTemperature(feelsLike, unit)}
             </div>
           )}
         </div>

@@ -48,7 +48,7 @@ const LocationSearch = ({ onLocationSelect }) => {
           aria-label="Sök på en ort"
         />
         <button type="submit" disabled={isSearching}>
-          {isSearching ? 'Searching...' : 'Search'}
+          {isSearching ? 'Söker...' : 'Sök'}
         </button>
       </form>
 

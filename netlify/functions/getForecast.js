@@ -22,8 +22,8 @@ export async function handler(event, context) {
   
       data.list.forEach(entry => {
         const date = new Date(entry.dt * 1000);
-        const day = date.toLocaleDateString('en-US', { weekday: 'short' });
-        const dateLabel = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const day = date.toLocaleDateString('sv-se', { weekday: 'short' });
+        const dateLabel = date.toLocaleDateString('sv-se', { month: 'short', day: 'numeric' });
         const hour = date.getHours();
   
         // Pick forecast closest to 12:00 for each day
