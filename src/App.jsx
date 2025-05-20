@@ -73,8 +73,8 @@ function App() {
       const userLocation = await getUserLocation();
       handleLocationSelect(userLocation);
     } catch (err) {
-      console.error("Couldn't get current location:", err);
-      setError('Failed to get your location. Please check your browser permissions.');
+      console.error("Kunde inte hämta din position:", err);
+      setError('Misslyckades att hämta din position. Kontrollera webbläsarens behörigheter.');
       setIsLoading(false);
     }
   };
@@ -123,8 +123,8 @@ function App() {
       const forecastData = await fetchForecastData(locationData);
       setForecast(forecastData.forecast);
     } catch (err) {
-      setError('Failed to fetch weather data. Please try again.');
-      console.error('Error fetching weather data:', err);
+      setError('Misslyckades med att hämta väderdata. Försök igen.');
+      console.error('Fel när väderdata hämtades:', err);
     } finally {
       setIsLoading(false);
     }
@@ -208,7 +208,7 @@ function App() {
                   <span></span>
                 </div>
               </div>
-              <div className="loading-text fade-in">Loading weather data...</div>
+              <div className="loading-text fade-in">Laddar väderdata...</div>
             </div>
           )}
           
