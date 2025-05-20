@@ -1,6 +1,4 @@
-// Create a new Netlify function: functions/getSavedLocationWeather.js
-
-exports.handler = async function(event, context) {
+export const handler = async function(event, context) {
   const API_KEY = process.env.WEATHER_API_KEY;
   
   if (!event.body) {

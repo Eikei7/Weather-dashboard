@@ -1,7 +1,7 @@
-// src/components/CurrentWeather.jsx - Without Custom Weather Animations
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formatDate } from '../utils/helpers';
 import { animateValue, staggerElements } from '../utils/transitions';
+import { getCityPhoto } from '../services/cityPhotoService';
 import '../styles/CurrentWeather.css';
 import '../styles/animations.css';
 
@@ -10,6 +10,30 @@ const CurrentWeather = ({ data, location, onSave }) => {
   const detailsRef = useRef(null);
   const tempValueRef = useRef(null);
   const prevTempRef = useRef(null);
+  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [isLoadingPhoto, setIsLoadingPhoto] = useState(false);
+  
+  // Fetch city photo when location changes
+  useEffect(() => {
+    const fetchCityPhoto = async () => {
+      if (location && (location.name || (data && data.city))) {
+        setIsLoadingPhoto(true);
+        try {
+          const cityName = location.name || data.city;
+          const photoUrl = await getCityPhoto(cityName);
+          if (photoUrl) {
+            setBackgroundImage(photoUrl);
+          }
+        } catch (error) {
+          console.error('Error loading city photo:', error);
+        } finally {
+          setIsLoadingPhoto(false);
+        }
+      }
+    };
+    
+    fetchCityPhoto();
+  }, [location, data]);
   
   useEffect(() => {
     if (!containerRef.current) return;
@@ -67,8 +91,20 @@ const CurrentWeather = ({ data, location, onSave }) => {
     day: 'numeric' 
   });
 
+  // Create styles for background image
+  const backgroundStyle = backgroundImage ? {
+    backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.21), rgba(0, 0, 0, 0.7)), url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    color: 'white'
+  } : {};
+
   return (
-    <div className="current-weather" ref={containerRef}>
+    <div 
+      className={`current-weather ${isLoadingPhoto ? 'loading-photo' : ''}`} 
+      ref={containerRef}
+      style={backgroundStyle}
+    >
       <div className="weather-header">
         <div className="location-info">
           <h2 className="fade-in-down">{city || location.name}{country ? `, ${country}` : ''}</h2>
