@@ -4,8 +4,6 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  # Expose the GOOGLE_API_KEY as VITE_GOOGLE_API_KEY during build
-  VITE_GOOGLE_API_KEY = "${GOOGLE_API_KEY}"
 
 [functions]
   directory = "netlify/functions"
@@ -15,6 +13,13 @@
   targetPort = 3000
   port = 8888
   framework = "vite"
+
+# For local development only - these won't be deployed
+[dev.environment]
+  # For local development with netlify dev
+  # Note: You should set actual values in the Netlify UI for production
+  WEATHER_API_KEY = ""
+  GOOGLE_API_KEY = ""
 
 [[redirects]]
   from = "/*"
