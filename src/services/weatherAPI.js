@@ -1,6 +1,6 @@
-// Replace with your actual API key from OpenWeatherMap
-const API_KEY = import.meta.env.WEATHER_API_KEY || 'your_api_key_here';
-const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+// Weather API service module
+// Note: This file runs in the browser, so we don't access process.env directly
+// All API calls are proxied through Netlify functions
 
 /**
  * Fetch current weather data for a location
@@ -12,7 +12,6 @@ export const fetchWeatherData = async (location) => {
     const response = await fetch(
       `/.netlify/functions/getData?lat=${location.lat}&lon=${location.lon}`
     );
-    
     
     if (!response.ok) {
       throw new Error(`Weather API error: ${response.statusText}`);
@@ -58,7 +57,7 @@ export const fetchForecastData = async (location) => {
     const data = await response.json();
 
     return {
-      forecast: data.list, // ← Directly use what the function returns
+      forecast: data.list, 
       lastUpdated: data.lastUpdated || new Date().toISOString(),
     };
   } catch (error) {
@@ -66,7 +65,6 @@ export const fetchForecastData = async (location) => {
     throw error;
   }
 };
-
 
 /**
  * Search for locations based on city name
