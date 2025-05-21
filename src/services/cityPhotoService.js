@@ -1,5 +1,4 @@
 // services/cityPhotoService.js
-const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 /**
  * Fetches a city photo using Google Places API
@@ -8,6 +7,12 @@ const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
  */
 export async function getCityPhoto(cityName) {
   try {
+    // Get API key from environment variables
+    const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+    
+    // Log key availability for debugging
+    console.log('API key available:', !!API_KEY);
+    
     // Step 1: Find the place ID using Text Search
     const textSearchUrl = `https://places.googleapis.com/v1/places:searchText`;
     const textSearchResponse = await fetch(textSearchUrl, {
@@ -18,16 +23,26 @@ export async function getCityPhoto(cityName) {
         'X-Goog-FieldMask': 'places.id,places.displayName,places.photos'
       },
       body: JSON.stringify({
-        textQuery: `${cityName} city landmarks`,
-        languageCode: 'sv' // Swedish language code (adjust if needed)
+        textQuery: `${cityName} landmarks`,
+        maxResultCount: 10
       })
     });
 
+    // Log detailed error information if request fails
     if (!textSearchResponse.ok) {
-      throw new Error(`Error searching for place: ${textSearchResponse.statusText}`);
+      const errorText = await textSearchResponse.text();
+      console.error('Places API Error Response:', {
+        status: textSearchResponse.status,
+        statusText: textSearchResponse.statusText,
+        body: errorText
+      });
+      throw new Error(`Error searching for place: ${textSearchResponse.status} ${textSearchResponse.statusText}`);
     }
 
     const textSearchData = await textSearchResponse.json();
+    
+    // Debug response
+    console.log('Places API response:', textSearchData);
     
     // Check if we got results with photos
     if (!textSearchData.places || textSearchData.places.length === 0) {
@@ -50,13 +65,13 @@ export async function getCityPhoto(cityName) {
     
     // Step 2: Get the actual photo using the reference
     // Format: places/{placeId}/photos/{photoId}/media
-    const photoUrl = `https://places.googleapis.com/v1/${photoReference}/media?maxWidthPx=1200&maxHeightPx=800&key=${API_KEY}`;
+    const photoUrl = `https://places.googleapis.com/v1/${photoReference}/media?maxHeightPx=1200&key=${API_KEY}`;
     
-    // We don't fetch the image here - we just return the URL
-    // The URL will be used directly in the background style of the component
     return photoUrl;
   } catch (error) {
     console.error('Error fetching city photo:', error);
-    return null;
+    // Graceful fallback to Unsplash if Google Places API fails
+    console.log('Falling back to Unsplash');
+    return `https://source.unsplash.com/1600x900/?${encodeURIComponent(cityName + ' city')}`;
   }
 }
