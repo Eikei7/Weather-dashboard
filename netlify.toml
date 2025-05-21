@@ -4,6 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  # Expose the GOOGLE_API_KEY as VITE_GOOGLE_API_KEY during build
+  VITE_GOOGLE_API_KEY = "${GOOGLE_API_KEY}"
 
 [functions]
   directory = "netlify/functions"

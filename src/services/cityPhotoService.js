@@ -1,4 +1,5 @@
-const API_KEY = import.meta.env.GOOGLE_API_KEY;
+// services/cityPhotoService.js
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 /**
  * Fetches a city photo using Google Places API
@@ -7,13 +8,6 @@ const API_KEY = import.meta.env.GOOGLE_API_KEY;
  */
 export async function getCityPhoto(cityName) {
   try {
-    // For debugging - check if API key is loaded
-    if (!API_KEY) {
-      console.warn('Google API key not found in environment variables');
-      // Fallback to Unsplash for development/testing
-      return `https://source.unsplash.com/1600x900/?${encodeURIComponent(cityName + ' city')}`;
-    }
-    
     // Step 1: Find the place ID using Text Search
     const textSearchUrl = `https://places.googleapis.com/v1/places:searchText`;
     const textSearchResponse = await fetch(textSearchUrl, {
@@ -25,15 +19,12 @@ export async function getCityPhoto(cityName) {
       },
       body: JSON.stringify({
         textQuery: `${cityName} city landmarks`,
-        languageCode: 'sv' // Swedish language code
+        languageCode: 'sv' // Swedish language code (adjust if needed)
       })
     });
 
     if (!textSearchResponse.ok) {
-      console.warn(`API request failed with status: ${textSearchResponse.status}`);
-      console.warn('This is likely a CORS issue with Google Places API');
-      // Fallback to Unsplash
-      return `https://source.unsplash.com/1600x900/?${encodeURIComponent(cityName + ' city')}`;
+      throw new Error(`Error searching for place: ${textSearchResponse.statusText}`);
     }
 
     const textSearchData = await textSearchResponse.json();
@@ -41,8 +32,7 @@ export async function getCityPhoto(cityName) {
     // Check if we got results with photos
     if (!textSearchData.places || textSearchData.places.length === 0) {
       console.log('No places found for city:', cityName);
-      // Fallback to Unsplash
-      return `https://source.unsplash.com/1600x900/?${encodeURIComponent(cityName + ' city')}`;
+      return null;
     }
 
     // Find the first place with photos
@@ -52,8 +42,7 @@ export async function getCityPhoto(cityName) {
 
     if (!placeWithPhotos || !placeWithPhotos.photos || placeWithPhotos.photos.length === 0) {
       console.log('No photos found for city:', cityName);
-      // Fallback to Unsplash
-      return `https://source.unsplash.com/1600x900/?${encodeURIComponent(cityName + ' city')}`;
+      return null;
     }
 
     // Get the first photo's resource name
@@ -63,10 +52,11 @@ export async function getCityPhoto(cityName) {
     // Format: places/{placeId}/photos/{photoId}/media
     const photoUrl = `https://places.googleapis.com/v1/${photoReference}/media?maxWidthPx=1200&maxHeightPx=800&key=${API_KEY}`;
     
+    // We don't fetch the image here - we just return the URL
+    // The URL will be used directly in the background style of the component
     return photoUrl;
   } catch (error) {
     console.error('Error fetching city photo:', error);
-    // Graceful fallback to Unsplash
-    return `https://source.unsplash.com/1600x900/?${encodeURIComponent(cityName + ' city')}`;
+    return null;
   }
 }
