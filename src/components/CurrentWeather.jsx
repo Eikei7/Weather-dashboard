@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { formatDate } from '../utils/helpers';
 import { animateValue, staggerElements } from '../utils/transitions';
-import { getCityPhoto } from '../services/cityPhotoService';
 import '../styles/CurrentWeather.css';
 import '../styles/animations.css';
 
@@ -10,43 +9,19 @@ const CurrentWeather = ({ data, location, onSave }) => {
   const detailsRef = useRef(null);
   const tempValueRef = useRef(null);
   const prevTempRef = useRef(null);
-  const [backgroundImage, setBackgroundImage] = useState(null);
-  const [isLoadingPhoto, setIsLoadingPhoto] = useState(false);
-  
-  // Fetch city photo when location changes
-  useEffect(() => {
-    const fetchCityPhoto = async () => {
-      if (location && (location.name || (data && data.city))) {
-        setIsLoadingPhoto(true);
-        try {
-          const cityName = location.name || data.city;
-          const photoUrl = await getCityPhoto(cityName);
-          if (photoUrl) {
-            setBackgroundImage(photoUrl);
-          }
-        } catch (error) {
-          console.error('Error loading city photo:', error);
-        } finally {
-          setIsLoadingPhoto(false);
-        }
-      }
-    };
-    
-    fetchCityPhoto();
-  }, [location, data]);
-  
+
   useEffect(() => {
     if (!containerRef.current) return;
-    
+
     // Animate container on mount
     containerRef.current.classList.add('fade-in-up');
-    
+
     // Animate weather details with stagger effect
     if (detailsRef.current) {
       const detailItems = detailsRef.current.querySelectorAll('.detail-item');
       staggerElements(detailItems, 'slide-in-right', 100);
     }
-    
+
     // Animate temperature change
     if (tempValueRef.current && data) {
       const prevTemp = prevTempRef.current || data.temperature;
@@ -58,7 +33,7 @@ const CurrentWeather = ({ data, location, onSave }) => {
       prevTempRef.current = data.temperature;
     }
   }, [data]);
-  
+
   if (!data) return null;
 
   const {
@@ -77,31 +52,29 @@ const CurrentWeather = ({ data, location, onSave }) => {
 
   const formatTime = (timestamp) => {
     if (!timestamp) return 'N/A';
-    return new Date(timestamp).toLocaleTimeString('sv', { 
-      hour: '2-digit', 
+    return new Date(timestamp).toLocaleTimeString('sv', {
+      hour: '2-digit',
       minute: '2-digit',
       hour12: false
     });
   };
 
-  const currentDate = formatDate(new Date(), { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  const currentDate = formatDate(new Date(), {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   });
 
-  // Create styles for background image
-  const backgroundStyle = backgroundImage ? {
-    backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.21), rgba(0, 0, 0, 0.7)), url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    color: 'white'
-  } : {};
+  // Simple static background style (gradient)
+  const backgroundStyle = {
+    background: "linear-gradient(to bottom right, #4facfe, #00f2fe)",
+    color: "white"
+  };
 
   return (
-    <div 
-      className={`current-weather ${isLoadingPhoto ? 'loading-photo' : ''}`} 
+    <div
+      className="current-weather"
       ref={containerRef}
       style={backgroundStyle}
     >
@@ -118,9 +91,9 @@ const CurrentWeather = ({ data, location, onSave }) => {
       <div className="weather-content">
         <div className="temperature-display">
           <div className="temp-icon zoom-in">
-            <img 
-              src={`https://openweathermap.org/img/wn/${icon}@4x.png`} 
-              alt={description} 
+            <img
+              src={`https://openweathermap.org/img/wn/${icon}@4x.png`}
+              alt={description}
             />
           </div>
           <div className="temp-info">
