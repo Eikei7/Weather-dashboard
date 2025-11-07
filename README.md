@@ -1,6 +1,11 @@
 # Weather Dashboard
 
 A modern, responsive weather dashboard application built with React and Vite. This app allows users to check current weather conditions and forecasts for multiple locations around the world.
+<img width="1415" height="693" alt="Skärmbild 2025-11-07 125507" src="https://github.com/user-attachments/assets/4cb92806-6751-49a9-8306-98867f3db7e8" />
+
+
+<img width="885" height="888" alt="Skärmbild 2025-11-07 125541" src="https://github.com/user-attachments/assets/78550c8c-ae47-4926-baaa-e23f1dbb687e" />
+
 
 ## Features
 
