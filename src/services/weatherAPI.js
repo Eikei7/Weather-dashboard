@@ -1,7 +1,3 @@
-// Weather API service module
-// Note: This file runs in the browser, so we don't access process.env directly
-// All API calls are proxied through Netlify functions
-
 /**
  * Fetch current weather data for a location
  * @param {Object} location - Location object with lat and lon properties

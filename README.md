@@ -58,7 +58,7 @@ A modern, responsive weather dashboard application built with React and Vite. Th
    yarn dev
    ```
 
-5. Open your browser and navigate to `http://localhost:8888`
+5. Open your browser and navigate to `http://localhost:3000`
 
 ## Project Structure
 
@@ -68,9 +68,11 @@ weather-dashboard/
 │   └── functions/
 │       ├── getData.js
 │       ├── getForecast.js
+│       ├── getSavedLocationWeather.js
 │       └── searchLocation.js
 ├── public/
-│   └── favicon.ico
+│   ├── favicon.svg
+│   └── location.png
 ├── src/
 │   ├── components/
 │   │   ├── CurrentWeather.jsx
@@ -102,7 +104,6 @@ weather-dashboard/
 │   │   └── helpers.js
 │   ├── App.jsx
 │   └── main.jsx
-├── .env
 ├── .gitignore
 ├── index.html
 ├── vite.config.js
