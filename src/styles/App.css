@@ -260,7 +260,6 @@ body {
   }
 }
 
-/* Add support for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -269,12 +268,11 @@ body {
     scroll-behavior: auto !important;
   }
 }
-/* Add these styles to your App.css file */
 
 .search-container {
   width: 100%;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 10px;
   margin-bottom: 10px;
 }
@@ -297,7 +295,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0; /* Prevent button from shrinking */
+  flex-shrink: 0;
 }
 
 .my-location-button:hover {
@@ -329,14 +327,14 @@ body {
   }
   
   .my-location-button {
-    height: 40px;
-    width: 40px;
+    height: 45px;
+    width: 45px;
   }
   
-  .my-location-button img {
+  /* .my-location-button img {
     width: 24px;
     height: 24px;
-  }
+  } */
 }
 
 /* Responsive adjustments */
