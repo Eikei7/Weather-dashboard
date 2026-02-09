@@ -1,7 +1,6 @@
 /**
- * Fetch current weather data for a location
- * @param {Object} location - Location object with lat and lon properties
- * @returns {Promise} - Promise that resolves to weather data
+ * @param {Object} location
+ * @returns {Promise}
  */
 export const fetchWeatherData = async (location) => {
   try {
@@ -25,9 +24,9 @@ export const fetchWeatherData = async (location) => {
       icon: data.weather[0].icon,
       country: data.sys.country,
       city: data.name,
-      sunrise: data.sys.sunrise * 1000, // Convert to milliseconds
-      sunset: data.sys.sunset * 1000,   // Convert to milliseconds
-      lastUpdated: new Date().toISOString(), // Add timestamp for when data was fetched
+      sunrise: data.sys.sunrise * 1000,
+      sunset: data.sys.sunset * 1000,
+      lastUpdated: new Date().toISOString(),
     };
   } catch (error) {
     console.error('Error fetching weather data:', error);
@@ -36,9 +35,9 @@ export const fetchWeatherData = async (location) => {
 };
 
 /**
- * Fetch 5-day forecast data for a location
- * @param {Object} location - Location object with lat and lon properties
- * @returns {Promise} - Promise that resolves to forecast data
+
+ * @param {Object} location
+ * @returns {Promise}
  */
 export const fetchForecastData = async (location) => {
   try {
@@ -63,9 +62,8 @@ export const fetchForecastData = async (location) => {
 };
 
 /**
- * Search for locations based on city name
- * @param {string} query - Search query string (city name)
- * @returns {Promise} - Promise that resolves to an array of location objects
+ * @param {string} query
+ * @returns {Promise}
  */
 export const searchLocations = async (query) => {
   try {
@@ -85,9 +83,8 @@ export const searchLocations = async (query) => {
 };
 
 /**
- * Format a timestamp into a readable date and time string
- * @param {string} timestamp - ISO timestamp string
- * @returns {string} - Formatted date and time string
+ * @param {string} timestamp
+ * @returns {string}
  */
 export const formatLastUpdated = (timestamp) => {
   if (!timestamp) return 'Unknown';
