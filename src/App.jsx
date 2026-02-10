@@ -155,7 +155,7 @@ function App() {
       
       <div className="app">
         <header className="app-header" ref={headerRef}>
-          <h1>🌅 Dagens väder 🌃</h1>
+          <h1>Dagens väder</h1>
           <div className="search-container">
             <LocationSearch onLocationSelect={handleLocationSelect} />
             <button 
