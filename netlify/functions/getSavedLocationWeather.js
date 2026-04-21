@@ -1,6 +1,15 @@
 export const handler = async function(event, context) {
   const API_KEY = process.env.WEATHER_API_KEY;
   
+  // ADD: API key check
+  if (!API_KEY) {
+    console.error('WEATHER_API_KEY is not configured');
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Server configuration error' }),
+    };
+  }
+  
   if (!event.body) {
     return {
       statusCode: 400,
@@ -18,10 +27,28 @@ export const handler = async function(event, context) {
       };
     }
     
+    // ADD: Limit number of locations to prevent abuse
+    const MAX_LOCATIONS = 20;
+    if (locations.length > MAX_LOCATIONS) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: `Maximum ${MAX_LOCATIONS} locations allowed` }),
+      };
+    }
+    
     // Fetch weather data for each location in parallel
     const weatherPromises = locations.map(async (location) => {
       try {
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&lang=se&appid=${API_KEY}`;
+        // ADD: Validate location data
+        if (!location.lat || !location.lon) {
+          return {
+            locationKey: `${location.lat}-${location.lon}`,
+            error: 'Invalid location data'
+          };
+        }
+        
+        // CHANGE: lang=se to lang=sv
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&lang=sv&appid=${API_KEY}`;
         const response = await fetch(url);
         
         if (!response.ok) {
@@ -63,6 +90,9 @@ export const handler = async function(event, context) {
     
     return {
       statusCode: 200,
+      headers: {
+        'Cache-Control': 'public, max-age=300', // Cache for 5 minutes
+      },
       body: JSON.stringify({ weatherData }),
     };
   } catch (error) {
