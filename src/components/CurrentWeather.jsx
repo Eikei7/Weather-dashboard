@@ -1,140 +1,101 @@
-import { useEffect, useRef } from 'react';
+import React, { useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate } from '../utils/helpers';
-import { animateValue, staggerElements } from '../utils/transitions';
 import '../styles/CurrentWeather.css';
-import '../styles/animations.css';
 
 const CurrentWeather = ({ data, location, onSave }) => {
-  const containerRef = useRef(null);
-  const detailsRef = useRef(null);
-  const tempValueRef = useRef(null);
-  const prevTempRef = useRef(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Animate container on mount
-    containerRef.current.classList.add('fade-in-up');
-
-    // Animate weather details with stagger effect
-    if (detailsRef.current) {
-      const detailItems = detailsRef.current.querySelectorAll('.detail-item');
-      staggerElements(detailItems, 'slide-in-right', 100);
-    }
-
-    // Animate temperature change
-    if (tempValueRef.current && data) {
-      const prevTemp = prevTempRef.current || data.temperature;
-      animateValue(prevTemp, data.temperature, (value) => {
-        if (tempValueRef.current) {
-          tempValueRef.current.textContent = `${Math.round(value)}°C`;
-        }
-      }, 1000);
-      prevTempRef.current = data.temperature;
-    }
-  }, [data]);
-
   if (!data) return null;
 
   const {
-    temperature,
-    feelsLike,
-    description,
-    humidity,
-    windSpeed,
-    pressure,
-    icon,
-    sunrise,
-    sunset,
-    city,
-    country
+    temperature, feelsLike, description, humidity,
+    windSpeed, pressure, icon, sunrise, sunset, city, country
   } = data;
+
+  const currentDate = useMemo(() => formatDate(new Date(), {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  }), []);
 
   const formatTime = (timestamp) => {
     if (!timestamp) return 'N/A';
     return new Date(timestamp).toLocaleTimeString('sv', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
+      hour: '2-digit', minute: '2-digit'
     });
   };
 
-  const currentDate = formatDate(new Date(), {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.6,
+        when: "beforeChildren",
+        staggerChildren: 0.1 
+      }
+    }
+  };
 
-  // Simple static background style (gradient)
-  const backgroundStyle = {
-    background: "linear-gradient(to bottom right, #4facfe, #00f2fe)",
-    color: "white"
+  const itemVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: { opacity: 1, x: 0 }
   };
 
   return (
-    <div
-      className="current-weather"
-      ref={containerRef}
-      style={backgroundStyle}
+    <motion.div 
+      className="weather-card-modern"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
     >
-      <div className="weather-header">
+      <header className="weather-header">
         <div className="location-info">
-          <h2 className="fade-in-down">{city || location.name}{country ? `, ${country}` : ''}</h2>
-          <p className="date fade-in">{currentDate}</p>
+          <motion.h2 variants={itemVariants}>
+            {city || location?.name}{country ? `, ${country}` : ''}
+          </motion.h2>
+          <p className="date-badge">{currentDate}</p>
         </div>
-        <button onClick={onSave} className="save-button">
-          Spara plats
+        <button onClick={onSave} className="save-btn-glass">
+          <span>Spara plats</span>
         </button>
+      </header>
+
+      <div className="weather-main-content">
+        <motion.div 
+          className="temp-visual"
+          variants={itemVariants}
+          whileHover={{ scale: 1.05 }}
+        >
+          <img 
+            src={`https://openweathermap.org/img/wn/${icon}@4x.png`} 
+            alt={description} 
+          />
+        </motion.div>
+
+        <div className="temp-details">
+          <motion.div className="main-temp" variants={itemVariants}>
+             {/* Enkel animation för siffran */}
+             <motion.span>{Math.round(temperature)}</motion.span>°C
+          </motion.div>
+          <p className="description-text">{description}</p>
+          <p className="feels-like-text">Känns som {Math.round(feelsLike)}°C</p>
+        </div>
       </div>
 
-      <div className="weather-content">
-        <div className="temperature-display">
-          <div className="temp-icon zoom-in">
-            <img
-              src={`https://openweathermap.org/img/wn/${icon}@4x.png`}
-              alt={description}
-            />
-          </div>
-          <div className="temp-info">
-            <h3 className="temp-value" ref={tempValueRef}>
-              {temperature}°C
-            </h3>
-            <p className="temp-description fade-in">
-              {description}
-            </p>
-            <p className="feels-like fade-in">
-              Känns som: {feelsLike}°C
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="weather-details" ref={detailsRef}>
-        <div className="detail-item">
-          <span className="detail-label">Luftfuktighet</span>
-          <span className="detail-value">{humidity}%</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Vind</span>
-          <span className="detail-value">
-            {windSpeed} m/s
-          </span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Lufttryck</span>
-          <span className="detail-value">{pressure} hPa</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Soluppgång</span>
-          <span className="detail-value">{formatTime(sunrise)}</span>
-        </div>
-        <div className="detail-item">
-          <span className="detail-label">Solnedgång</span>
-          <span className="detail-value">{formatTime(sunset)}</span>
-        </div>
-      </div>
-    </div>
+      <motion.div className="weather-grid" variants={containerVariants}>
+        {[
+          { label: 'Luftfuktighet', value: `${humidity}%` },
+          { label: 'Vind', value: `${windSpeed} m/s` },
+          { label: 'Tryck', value: `${pressure} hPa` },
+          { label: 'Soluppgång', value: formatTime(sunrise) },
+          { label: 'Solnedgång', value: formatTime(sunset) },
+        ].map((stat, i) => (
+          <motion.div key={i} className="grid-item-glass" variants={itemVariants}>
+            <span className="label">{stat.label}</span>
+            <span className="value">{stat.value}</span>
+          </motion.div>
+        ))}
+      </motion.div>
+    </motion.div>
   );
 };
 
