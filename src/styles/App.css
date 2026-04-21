@@ -1,16 +1,47 @@
 :root {
+  /* Primary Colors */
   --primary-color: #0077b6;
   --primary-hover: #023e8a;
   --secondary-color: #00b4d8;
+  
+  /* Background Colors */
   --background-color: rgba(248, 249, 250, 0.1);
   --light-bg-color: rgba(255, 255, 255, 0.85);
+  --card-bg-color: #ffffff;
+  --overlay-bg: rgba(248, 249, 250, 0.7);
+  
+  /* Text Colors */
   --text-color: #343a40;
   --text-light: #6c757d;
+  --text-white: #ffffff;
+  
+  /* Border & Shadow */
   --border-color: #dee2e6;
-  --success-color: #28a745;
-  --danger-color: #dc3545;
   --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   --card-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  
+  /* Status Colors */
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-round: 20px;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
 }
 
 * {
@@ -191,43 +222,10 @@ body {
   -webkit-backdrop-filter: blur(6px);
 }
 
-/* Animation for cards */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .weather-card, .forecast-day, .location-item {
   animation: fadeIn 0.5s ease forwards;
 }
 
-/* Responsive adjustments */
 @media (max-width: 992px) {
   .app {
     grid-template-columns: 3fr 1fr;
@@ -328,7 +326,8 @@ body {
   
   .my-location-button {
     height: 45px;
-    width: 45px;
+    min-width: 45px;
+    padding: 0;
   }
   
   /* .my-location-button img {

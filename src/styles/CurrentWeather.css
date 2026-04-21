@@ -1,10 +1,10 @@
 .current-weather {
   position: relative;
-  padding: 1.5rem;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  margin-bottom: 2rem;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  background-color: var(--card-bg-color);
+  box-shadow: var(--card-shadow);
+  margin-bottom: var(--spacing-xl);
   overflow: hidden;
   transition: background-image 1s ease-in-out;
 }
@@ -12,6 +12,22 @@
 .current-weather[style*="background-image"] {
   color: white;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.current-weather[style*="background-image"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 0;
+}
+
+.current-weather[style*="background-image"] > * {
+  position: relative;
+  z-index: 1;
 }
 
 .current-weather[style*="background-image"] .detail-item {
@@ -76,28 +92,28 @@
 
 .location-info h2 {
   font-size: 1.8rem;
-  color: #ffffff;
+  color: var(--text-white);
   margin: 0;
 }
 
 .date {
-  color: #6c757d;
-  margin-top: 0.25rem;
+  color: var(--text-light);
+  margin-top: var(--spacing-xs);
 }
 
 .save-button {
-  background-color: #0077b6;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-white);
   border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: all var(--transition-normal);
 }
 
 .save-button:hover {
-  background-color: #023e8a;
+  background-color: var(--primary-hover);
   transform: translateY(-2px);
 }
 

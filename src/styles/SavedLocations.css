@@ -1,16 +1,16 @@
 .saved-locations h3 {
   font-size: 1.2rem;
-  color: #0077b6;
-  margin-bottom: 1rem;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
 }
 
 .no-locations {
-  color: #6c757d;
+  color: var(--text-light);
   font-size: 0.9rem;
   text-align: center;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 4px;
+  padding: var(--spacing-md);
+  background-color: var(--overlay-bg);
+  border-radius: var(--radius-sm);
 }
 
 .location-list {
@@ -22,15 +22,16 @@
 .location-item {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
-  background-color: #f8f9fa;
-  border-radius: 4px;
+  margin-bottom: var(--spacing-sm);
+  background-color: var(--overlay-bg);
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .location-item:hover {
   transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
 }
 
 .location-button {
@@ -42,10 +43,13 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.2s;
-  color:#0077b6;
+  transition: background-color var(--transition-fast);
+  color: var(--primary-color);
 }
 
+.location-button:hover {
+  background-color: rgba(0, 119, 182, 0.1);
+}
 
 .location-name {
   flex: 1;
@@ -71,7 +75,7 @@
 
 .location-temp {
   font-weight: 500;
-  color: #0077b6;
+  color: var(--primary-color);
 }
 
 .location-weather.loading {
@@ -80,10 +84,10 @@
   justify-content: center;
 }
 
-.loading-dot {
+.location-weather.loading .loading-dot {
   width: 8px;
   height: 8px;
-  background-color: #ccc;
+  background-color: var(--primary-color);
   border-radius: 50%;
   animation: pulse 1.5s infinite ease-in-out;
 }
@@ -103,22 +107,18 @@
   }
 }
   
-.location-button:hover {
-  background-color: #e9ecef;
-}
-
 .remove-button {
-  background-color: #f8f9fa;
+  background-color: transparent;
   border: none;
-  color: #dc3545;
+  color: var(--danger-color);
   font-size: 1.2rem;
   font-weight: bold;
-  padding: 0.5rem 0.75rem;
+  padding: var(--spacing-sm) 0.75rem;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: all var(--transition-fast);
 }
 
 .remove-button:hover {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--danger-color);
+  color: var(--text-white);
 }
