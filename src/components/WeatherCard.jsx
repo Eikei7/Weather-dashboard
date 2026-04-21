@@ -4,10 +4,6 @@ import { animateValue } from '../utils/transitions';
 import '../styles/WeatherCard.css';
 import '../styles/animations.css';
 
-/**
- * A reusable card component for displaying weather information
- * Now with animations!
- */
 const WeatherCard = ({ 
   title,
   date,

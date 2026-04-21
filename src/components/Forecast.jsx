@@ -11,12 +11,10 @@ const Forecast = ({ data, unit }) => {
   useEffect(() => {
     if (!containerRef.current) return;
     
-    // Animate container on mount
     containerRef.current.classList.add('fade-in-up');
     
-    // Animate forecast items with stagger effect
     if (forecastItemsRef.current) {
-      const items = forecastItemsRef.current.querySelectorAll('.forecast-day');
+      const items = forecastItemsRef.current.querySelectorAll('.weather-card');
       staggerElements(items, 'zoom-in', 150);
     }
   }, [data]);
@@ -29,19 +27,19 @@ const Forecast = ({ data, unit }) => {
       
       <div className="forecast-container" ref={forecastItemsRef}>
         {data.map((day, index) => (
-          <div key={index} className="forecast-day">
-            <WeatherCard
-              title={day.day}
-              date={day.date}
-              temperature={day.temp}
-              description={day.description}
-              icon={day.icon}
-              humidity={day.humidity}
-              windSpeed={day.windSpeed}
-              unit={unit}
-              isCompact={true}
-            />
-          </div>
+          <WeatherCard
+            key={`${day.day}-${index}`}
+            title={day.day}
+            date={day.date}
+            temperature={day.temp}
+            description={day.description}
+            icon={day.icon}
+            humidity={day.humidity}
+            windSpeed={day.windSpeed}
+            unit={unit}
+            isCompact={true}
+            animationDelay={index * 150}
+          />
         ))}
       </div>
     </div>
