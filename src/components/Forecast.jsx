@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import WeatherCard from './WeatherCard';
 import { staggerElements } from '../utils/transitions';
 import '../styles/Forecast.css';
@@ -46,4 +46,4 @@ const Forecast = ({ data, unit }) => {
   );
 };
 
-export default Forecast;
+export default memo(Forecast);

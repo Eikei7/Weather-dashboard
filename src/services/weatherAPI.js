@@ -1,10 +1,47 @@
+const CACHE_TTL = {
+  weather: 10 * 60 * 1000,   // 10 minutes
+  forecast: 30 * 60 * 1000,  // 30 minutes
+  search: 60 * 60 * 1000,    // 1 hour
+};
+
+const cache = new Map();
+
+function getCached(key, ttl) {
+  const entry = cache.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.timestamp > ttl) {
+    cache.delete(key);
+    return null;
+  }
+  return entry.data;
+}
+
+function setCache(key, data) {
+  cache.set(key, { data, timestamp: Date.now() });
+}
+
+async function fetchWithTimeout(url, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    return response;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 /**
  * @param {Object} location
  * @returns {Promise}
  */
 export const fetchWeatherData = async (location) => {
+  const cacheKey = `weather:${location.lat}:${location.lon}`;
+  const cached = getCached(cacheKey, CACHE_TTL.weather);
+  if (cached) return cached;
+
   try {
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       `/.netlify/functions/getData?lat=${location.lat}&lon=${location.lon}`
     );
     
@@ -14,7 +51,7 @@ export const fetchWeatherData = async (location) => {
     
     const data = await response.json();
     
-    return {
+    const result = {
       temperature: Math.round(data.main.temp),
       feelsLike: Math.round(data.main.feels_like),
       description: data.weather[0].description,
@@ -28,6 +65,9 @@ export const fetchWeatherData = async (location) => {
       sunset: data.sys.sunset * 1000,
       lastUpdated: new Date().toISOString(),
     };
+
+    setCache(cacheKey, result);
+    return result;
   } catch (error) {
     console.error('Error fetching weather data:', error);
     throw error;
@@ -40,8 +80,12 @@ export const fetchWeatherData = async (location) => {
  * @returns {Promise}
  */
 export const fetchForecastData = async (location) => {
+  const cacheKey = `forecast:${location.lat}:${location.lon}`;
+  const cached = getCached(cacheKey, CACHE_TTL.forecast);
+  if (cached) return cached;
+
   try {
-    const response = await fetch(
+    const response = await fetchWithTimeout(
       `/.netlify/functions/getForecast?lat=${location.lat}&lon=${location.lon}`
     );
 
@@ -51,10 +95,13 @@ export const fetchForecastData = async (location) => {
 
     const data = await response.json();
 
-    return {
+    const result = {
       forecast: data.list, 
       lastUpdated: data.lastUpdated || new Date().toISOString(),
     };
+
+    setCache(cacheKey, result);
+    return result;
   } catch (error) {
     console.error('Error fetching forecast data:', error);
     throw error;
@@ -66,8 +113,14 @@ export const fetchForecastData = async (location) => {
  * @returns {Promise}
  */
 export const searchLocations = async (query) => {
+  const cacheKey = `search:${query.toLowerCase().trim()}`;
+  const cached = getCached(cacheKey, CACHE_TTL.search);
+  if (cached) return cached;
+
   try {
-    const response = await fetch(`/.netlify/functions/searchLocation?query=${encodeURIComponent(query)}`);
+    const response = await fetchWithTimeout(
+      `/.netlify/functions/searchLocation?query=${encodeURIComponent(query)}`
+    );
 
     if (!response.ok) {
       throw new Error(`Location search API error: ${response.statusText}`);
@@ -75,6 +128,7 @@ export const searchLocations = async (query) => {
 
     const data = await response.json();
 
+    setCache(cacheKey, data);
     return data;
   } catch (error) {
     console.error('Error searching locations:', error);

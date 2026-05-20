@@ -21,10 +21,10 @@ const LocationSearch = ({ onLocationSelect }) => {
       setSearchResults(locations)
       
       if (locations.length === 0) {
-        setError('No locations found. Try a different search term.')
+        setError('Inga platser hittades. Prova en annan sökterm.')
       }
     } catch (err) {
-      setError('Error searching for locations. Please try again.')
+      setError('Fel vid sökning av platser. Försök igen.')
       console.error(err)
     } finally {
       setIsSearching(false)

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { formatTemperature, getWeatherIconUrl } from '../utils/helpers';
 import { animateValue } from '../utils/transitions';
 import '../styles/WeatherCard.css';
@@ -80,6 +80,7 @@ const WeatherCard = ({
               src={getWeatherIconUrl(icon, isCompact ? '2x' : '4x')} 
               alt={description || 'weather icon'} 
               className="weather-icon-img"
+              loading="lazy"
             />
           </div>
         )}
@@ -125,4 +126,4 @@ const WeatherCard = ({
   );
 };
 
-export default WeatherCard;
+export default React.memo(WeatherCard);

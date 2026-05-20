@@ -13,4 +13,14 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          framer: ['framer-motion'],
+        },
+      },
+    },
+  },
 })

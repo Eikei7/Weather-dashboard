@@ -18,8 +18,8 @@
 [dev.environment]
   # For local development with netlify dev
   # Note: You should set actual values in the Netlify UI for production
-  WEATHER_API_KEY = ""
-  GOOGLE_API_KEY = ""
+  # Replace the values below with your actual API keys for local development
+  WEATHER_API_KEY = "9d46c584a17f4d67cbd4b3e0d9f8847b"
 
 [[redirects]]
   from = "/*"

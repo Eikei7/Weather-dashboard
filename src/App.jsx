@@ -1,15 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import CurrentWeather from './components/CurrentWeather';
 import Forecast from './components/Forecast';
 import LocationSearch from './components/LocationSearch';
 import SavedLocations from './components/SavedLocations';
-import WeatherMap from './components/WeatherMap';
 import LastUpdated from './components/LastUpdated';
 import DynamicBackground from './components/DynamicBackground';
+import ErrorBoundary from './components/ErrorBoundary';
 import { fetchWeatherData, fetchForecastData } from './services/weatherAPI';
 import { getUserLocation } from './utils/helpers';
 import './styles/App.css';
 import './styles/animations.css';
+
+const WeatherMap = lazy(() => import('./components/WeatherMap'));
 
 function App() {
   const [currentWeather, setCurrentWeather] = useState(null);
@@ -20,40 +22,12 @@ function App() {
   const [isChangingLocation, setIsChangingLocation] = useState(false);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
-  const [defaultLocationLoaded, setDefaultLocationLoaded] = useState(false);
-  const apiKey = import.meta.env.WEATHER_API_KEY;
   
   const headerRef = useRef(null);
   const contentRef = useRef(null);
   const sidebarRef = useRef(null);
-
-  useEffect(() => {
-    if (headerRef.current) {
-      headerRef.current.classList.add('fade-in-down');
-    }
-    
-    if (contentRef.current) {
-      contentRef.current.classList.add('fade-in');
-    }
-    
-    if (sidebarRef.current) {
-      sidebarRef.current.classList.add('slide-in-right');
-    }
-    
-    const saved = localStorage.getItem('savedLocations');
-    if (saved) {
-      setSavedLocations(JSON.parse(saved));
-    }
-
-    if (!defaultLocationLoaded) {
-      handleLocationSelect({
-        lat: 40.7128,
-        lon: -74.0060,
-        name: 'New York'
-      });
-      setDefaultLocationLoaded(true);
-    }
-  }, [defaultLocationLoaded]);
+  const requestIdRef = useRef(0);
+  const isInitializedRef = useRef(false);
 
   useEffect(() => {
     if (savedLocations.length > 0) {
@@ -61,7 +35,7 @@ function App() {
     }
   }, [savedLocations]);
 
-  const handleGetCurrentLocation = async () => {
+  const handleGetCurrentLocation = useCallback(async () => {
     try {
       setIsLoading(true);
       const userLocation = await getUserLocation();
@@ -71,9 +45,57 @@ function App() {
       setError('Misslyckades att hämta din position. Kontrollera webbläsarens behörigheter.');
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const handleLocationSelect = async (locationData) => {
+  const fetchLocationData = useCallback(async (locationData) => {
+    const requestId = ++requestIdRef.current;
+    setIsLoading(true);
+    setError(null);
+    setLocation(locationData);
+
+    try {
+      const [weatherData, forecastData] = await Promise.all([
+        fetchWeatherData(locationData),
+        fetchForecastData(locationData),
+      ]);
+
+      if (requestId !== requestIdRef.current) return;
+
+      setCurrentWeather(weatherData);
+      setLastUpdated(weatherData.lastUpdated);
+      setForecast(forecastData.forecast);
+    } catch (err) {
+      if (requestId !== requestIdRef.current) return;
+      setError('Misslyckades med att hämta väderdata. Försök igen.');
+      console.error('Fel när väderdata hämtades:', err);
+    } finally {
+      if (requestId === requestIdRef.current) {
+        setIsLoading(false);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isInitializedRef.current) return;
+    isInitializedRef.current = true;
+
+    if (headerRef.current) headerRef.current.classList.add('fade-in-down');
+    if (contentRef.current) contentRef.current.classList.add('fade-in');
+    if (sidebarRef.current) sidebarRef.current.classList.add('slide-in-right');
+
+    const saved = localStorage.getItem('savedLocations');
+    if (saved) {
+      setSavedLocations(JSON.parse(saved));
+    }
+
+    fetchLocationData({
+      lat: 40.7128,
+      lon: -74.0060,
+      name: 'New York'
+    });
+  }, [fetchLocationData]);
+
+  const handleLocationSelect = useCallback(async (locationData) => {
     if (location) {
       setIsChangingLocation(true);
       
@@ -96,29 +118,9 @@ function App() {
     } else {
       fetchLocationData(locationData);
     }
-  };
-  
-  const fetchLocationData = async (locationData) => {
-    setIsLoading(true);
-    setError(null);
-    setLocation(locationData);
+  }, [location, fetchLocationData]);
 
-    try {
-      const weatherData = await fetchWeatherData(locationData);
-      setCurrentWeather(weatherData);
-      setLastUpdated(weatherData.lastUpdated);
-
-      const forecastData = await fetchForecastData(locationData);
-      setForecast(forecastData.forecast);
-    } catch (err) {
-      setError('Misslyckades med att hämta väderdata. Försök igen.');
-      console.error('Fel när väderdata hämtades:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     if (location) {
       if (contentRef.current) {
         contentRef.current.classList.add('pulse');
@@ -130,88 +132,93 @@ function App() {
       
       handleLocationSelect(location);
     }
-  };
+  }, [location, handleLocationSelect]);
 
-  const addSavedLocation = (location) => {
-    if (!savedLocations.some(loc => loc.name === location.name)) {
-      
-      setSavedLocations([...savedLocations, location]);
-    }
-  };
+  const addSavedLocation = useCallback((location) => {
+    setSavedLocations(prev => {
+      if (prev.some(loc => loc.name === location.name)) return prev;
+      return [...prev, location];
+    });
+  }, []);
 
-  const removeSavedLocation = (locationName) => {
-    setSavedLocations(savedLocations.filter(loc => loc.name !== locationName));
-  };
+  const removeSavedLocation = useCallback((locationName) => {
+    setSavedLocations(prev => prev.filter(loc => loc.name !== locationName));
+  }, []);
 
   return (
-    <>
-      {currentWeather && (
-        <DynamicBackground 
-          weatherCode={currentWeather.icon} 
-          sunrise={currentWeather.sunrise} 
-          sunset={currentWeather.sunset}
-        />
-      )}
-      
-      <div className="app">
-        <header className="app-header" ref={headerRef}>
-          <h1>Dagens väder</h1>
-          <div className="search-container">
-            <LocationSearch onLocationSelect={handleLocationSelect} />
-            <button 
-              className="my-location-button"
-              onClick={handleGetCurrentLocation}
-              aria-label="Get my location"
-            >
-              <img src="/location.png" alt="Location Icon" />
-            </button>
-          </div>
-        </header>
-        
-        <main className="app-content" ref={contentRef}>
-          {isLoading && (
-            <div className="loading">
-              <div className="cloud-spinner">
-                <div className="rain">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-              <div className="loading-text fade-in">Laddar väderdata...</div>
-            </div>
-          )}
-          
-          {error && <div className="error shake">{error}</div>}
-          
-          {!isLoading && !error && currentWeather && !isChangingLocation && (
-            <>
-              <CurrentWeather 
-                data={currentWeather} 
-                location={location}
-                onSave={() => addSavedLocation(location)}
-              />
-              
-              {lastUpdated && <LastUpdated timestamp={lastUpdated} onRefresh={handleRefresh} />}
-              
-              {forecast && <Forecast data={forecast} />}
-              
-              {location && <WeatherMap location={location} />}
-            </>
-          )}
-        </main>
-        
-        <aside className="app-sidebar" ref={sidebarRef}>
-          <SavedLocations 
-            locations={savedLocations} 
-            onLocationSelect={handleLocationSelect}
-            onLocationRemove={removeSavedLocation}
-            apiKey={apiKey}
+    <ErrorBoundary>
+      <>
+        {currentWeather && (
+          <DynamicBackground 
+            weatherCode={currentWeather.icon} 
+            sunrise={currentWeather.sunrise} 
+            sunset={currentWeather.sunset}
           />
-        </aside>
-      </div>
-    </>
+        )}
+        
+        <div className="app">
+          <header className="app-header" ref={headerRef}>
+            <h1>Dagens väder</h1>
+            <div className="search-container">
+              <LocationSearch onLocationSelect={handleLocationSelect} />
+              <button 
+                className="my-location-button"
+                onClick={handleGetCurrentLocation}
+                aria-label="Get my location"
+              >
+                <img src="/location.png" alt="Location Icon" loading="lazy" />
+              </button>
+            </div>
+          </header>
+          
+          <main className="app-content" ref={contentRef}>
+            {isLoading && (
+              <div className="loading">
+                <div className="cloud-spinner">
+                  <div className="rain">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+                <div className="loading-text fade-in">Laddar väderdata...</div>
+              </div>
+            )}
+            
+            {error && <div className="error shake">{error}</div>}
+            
+            {!isLoading && !error && currentWeather && !isChangingLocation && (
+              <>
+                <CurrentWeather 
+                  data={currentWeather} 
+                  location={location}
+                  onSave={() => addSavedLocation(location)}
+                />
+                
+                {lastUpdated && <LastUpdated timestamp={lastUpdated} onRefresh={handleRefresh} />}
+                
+                {forecast && <Forecast data={forecast} />}
+                
+                {location && (
+                  <Suspense fallback={<div className="map-loading">Laddar karta...</div>}>
+                    <WeatherMap location={location} />
+                  </Suspense>
+                )}
+              </>
+            )}
+          </main>
+          
+          <aside className="app-sidebar" ref={sidebarRef}>
+            <SavedLocations 
+              locations={savedLocations} 
+              onLocationSelect={handleLocationSelect}
+              onLocationRemove={removeSavedLocation}
+            />
+          </aside>
+        </div>
+      </>
+    </ErrorBoundary>
   );
 }
 

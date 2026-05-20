@@ -1,7 +1,25 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate } from '../utils/helpers';
 import '../styles/CurrentWeather.css';
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: 0.6,
+      when: "beforeChildren",
+      staggerChildren: 0.1 
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: { opacity: 1, x: 0 }
+};
 
 const CurrentWeather = ({ data, location, onSave }) => {
   if (!data) return null;
@@ -11,33 +29,15 @@ const CurrentWeather = ({ data, location, onSave }) => {
     windSpeed, pressure, icon, sunrise, sunset, city, country
   } = data;
 
-  const currentDate = useMemo(() => formatDate(new Date(), {
+  const currentDate = formatDate(new Date(), {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-  }), []);
+  });
 
   const formatTime = (timestamp) => {
     if (!timestamp) return 'N/A';
     return new Date(timestamp).toLocaleTimeString('sv', {
       hour: '2-digit', minute: '2-digit'
     });
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.6,
-        when: "beforeChildren",
-        staggerChildren: 0.1 
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -10 },
-    visible: { opacity: 1, x: 0 }
   };
 
   return (
@@ -67,7 +67,8 @@ const CurrentWeather = ({ data, location, onSave }) => {
         >
           <img 
             src={`https://openweathermap.org/img/wn/${icon}@4x.png`} 
-            alt={description} 
+            alt={description}
+            loading="lazy"
           />
         </motion.div>
 
@@ -99,4 +100,4 @@ const CurrentWeather = ({ data, location, onSave }) => {
   );
 };
 
-export default CurrentWeather;
+export default React.memo(CurrentWeather);

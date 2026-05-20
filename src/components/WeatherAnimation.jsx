@@ -1,36 +1,40 @@
 import { useEffect, useRef } from 'react';
 import '../styles/WeatherAnimation.css';
 
+const PARTICLE_COUNT = 60;
+
 const WeatherAnimation = ({ weatherCode }) => {
   const canvasRef = useRef(null);
-  const animationFrameIdRef = useRef(null); // Store animation frame ID in a ref
+  const animationFrameIdRef = useRef(null);
   
   useEffect(() => {
     if (!canvasRef.current) return;
+
+    // Skip all canvas animations when user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
     
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     
-    // Set canvas dimensions
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     
-    // Clear previous animations
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Handle window resize
+    let resizeTimer = null;
     const handleResize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }, 150);
     };
     
     window.addEventListener('resize', handleResize);
     
-    // Animation elements
     let particles = [];
     
-    // Create animation based on weather code
-    // Weather codes from OpenWeatherMap: https://openweathermap.org/weather-conditions
     const weatherType = getWeatherType(weatherCode);
     
     switch (weatherType) {
@@ -50,16 +54,17 @@ const WeatherAnimation = ({ weatherCode }) => {
         setupThunderstormAnimation(canvas, ctx, particles, animationFrameIdRef);
         break;
       default:
-        // No animation for unknown weather
         break;
     }
     
-    // Cleanup function
     return () => {
       window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimer);
       if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
+        animationFrameIdRef.current = null;
       }
+      particles.length = 0;
     };
   }, [weatherCode]);
   
@@ -80,7 +85,7 @@ const WeatherAnimation = ({ weatherCode }) => {
   
   // Rain animation setup
   const setupRainAnimation = (canvas, ctx, particles, animationFrameIdRef) => {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -122,7 +127,7 @@ const WeatherAnimation = ({ weatherCode }) => {
   
   // Snow animation setup
   const setupSnowAnimation = (canvas, ctx, particles, animationFrameIdRef) => {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -324,7 +329,7 @@ const WeatherAnimation = ({ weatherCode }) => {
   // Thunderstorm animation setup
   const setupThunderstormAnimation = (canvas, ctx, particles, animationFrameIdRef) => {
     // Setup rain particles
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,

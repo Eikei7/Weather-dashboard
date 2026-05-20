@@ -13,6 +13,7 @@ const SavedLocations = ({ locations, onLocationSelect, onLocationRemove }) => {
       
       const response = await fetch('/.netlify/functions/getSavedLocationWeather', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ locations }),
       });
       
@@ -60,10 +61,17 @@ const SavedLocations = ({ locations, onLocationSelect, onLocationRemove }) => {
     if (!locations || locations.length === 0) return;
     
     const updateWeather = async () => {
+      // Read current cache directly from localStorage to avoid stale closure
+      let currentWeather = {};
+      try {
+        const cached = localStorage.getItem('savedLocationsWeather');
+        if (cached) currentWeather = JSON.parse(cached);
+      } catch {}
+
       // Find locations that need to be updated
       const locationsToUpdate = locations.filter(location => {
         const locationKey = `${location.lat}-${location.lon}`;
-        const existingData = locationWeather[locationKey];
+        const existingData = currentWeather[locationKey];
         return !existingData || !isCacheValid(existingData.timestamp);
       });
       
@@ -76,7 +84,7 @@ const SavedLocations = ({ locations, onLocationSelect, onLocationRemove }) => {
       
       if (newWeatherData) {
         // Merge new data with existing data
-        const updatedWeather = { ...locationWeather, ...newWeatherData };
+        const updatedWeather = { ...currentWeather, ...newWeatherData };
         setLocationWeather(updatedWeather);
         localStorage.setItem('savedLocationsWeather', JSON.stringify(updatedWeather));
       }
@@ -90,7 +98,7 @@ const SavedLocations = ({ locations, onLocationSelect, onLocationRemove }) => {
     }, 60 * 60 * 1000); // 1 hour
     
     return () => clearInterval(intervalId);
-  }, [locations, locationWeather]);
+  }, [locations]); // Only depend on locations — locationWeather is read from localStorage inside
   
   if (!locations || locations.length === 0) {
     return (
@@ -131,7 +139,8 @@ const SavedLocations = ({ locations, onLocationSelect, onLocationRemove }) => {
                       <img 
                         src={`https://openweathermap.org/img/wn/${weather.icon}.png`} 
                         alt="Weather icon" 
-                        className="location-weather-icon" 
+                        className="location-weather-icon"
+                        loading="lazy"
                       />
                     )}
                     <span className="location-temp">{weather.temp}°C</span>
