@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Geom:300,regular,500,600,700,800,900);
+
 :root {
   /* Primary Colors */
   --primary-color: #0077b6;
@@ -341,4 +343,12 @@ body {
   .search-container {
     flex-direction: row;
   }
+}
+
+.credits {
+  font-family: 'Geom', sans-serif;
+  margin-top: 2em;
+  font-size: 1.1em;
+  color: #888;
+  text-align: center;
 }

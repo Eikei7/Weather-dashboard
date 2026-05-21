@@ -216,6 +216,7 @@ function App() {
               onLocationRemove={removeSavedLocation}
             />
           </aside>
+          <p className='credits'>Made by <a href="https://frontend-erik.se" target='_blank' rel="noopener noreferrer">Erik Karlsson</a></p>
         </div>
       </>
     </ErrorBoundary>
